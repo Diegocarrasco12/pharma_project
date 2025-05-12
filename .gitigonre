@@ -1,0 +1,22 @@
+# Node modules (ambos)
+**/node_modules/
+
+# Logs
+**/*.log
+logs
+npm-debug.log*
+
+# Build
+frontend/dist/
+frontend/.vite/
+
+# Editor config
+.vscode/
+*.code-workspace
+
+# Env files
+**/.env
+
+# Mac / Linux / Windows system files
+.DS_Store
+Thumbs.db

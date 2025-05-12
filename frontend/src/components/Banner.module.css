@@ -1,0 +1,22 @@
+.banner {
+    background-color: #e8f0ff;
+    padding: 2rem;
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .banner h2 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+  
+  .banner button {
+    padding: 0.5rem 1.2rem;
+    background-color: royalblue;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+  

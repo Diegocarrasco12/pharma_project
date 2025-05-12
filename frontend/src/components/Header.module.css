@@ -1,0 +1,96 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #f9fafb;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 10;
+}
+
+.logoLink {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.logo {
+  width: 150px;
+  max-width: 180px;
+}
+
+
+.searchContainer {
+  flex: 1;
+  max-width: 600px;
+  margin: 0 1rem;
+}
+
+.searchContainer input {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.account {
+  font-size: 0.95rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Logo flotante solo visible en mobile */
+.logoMobileFloating {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  width: 48px;
+  height: 48px;
+  background: #ffffff;
+  padding: 6px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  z-index: 999;
+  display: none;
+}
+
+.logoMobileFloating img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .logo {
+    width: 100px;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .searchContainer {
+    margin: 0;
+  }
+
+  .account {
+    align-self: flex-end;
+  }
+
+  .logoMobileFloating {
+    display: block;
+  }
+
+  .logoMobileFloating {
+    width: 64px;
+    height: 64px;
+    padding: 8px;
+  }
+}

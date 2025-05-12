@@ -1,0 +1,28 @@
+.navbar ul {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 0.5rem 1rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.navbar li {
+  flex: 0 0 auto;
+  margin-right: 1rem;
+}
+
+.navbar a {
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.navbar ul::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .navbar ul {
+    justify-content: center;
+    overflow-x: visible;
+  }
+}
