@@ -2,8 +2,14 @@ import React from 'react';
 import Header from './components/Header';
 import Navbar from './components/Navbar';
 import HeroCarousel from './components/HeroCarousel';
-import Services from './components/Services'; // Importamos el componente nuevo
+import Services from './components/Services';
+import PrescriptionInfo from './components/PrescriptionInfo';
 import ProductCard from './components/ProductCard';
+import Footer from './components/Footer';
+import Cart from './components/Cart'; // ✅ Importar carrito
+import { ToastContainer } from 'react-toastify'; // ✅ Notificaciones
+import 'react-toastify/dist/ReactToastify.css';
+
 import styles from './styles/Home.module.css';
 import './styles/global.css';
 
@@ -47,6 +53,12 @@ function App() {
           image="/images/producto-alcohol-gel.jpg"
         />
       </main>
+
+      <PrescriptionInfo />
+      <Cart /> {/* ✅ Carrito visual (sidebar) */}
+      <Footer />
+
+      <ToastContainer position="top-right" autoClose={3000} />
     </>
   );
 }

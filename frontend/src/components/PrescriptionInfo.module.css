@@ -1,0 +1,48 @@
+.prescriptionSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f9f9f9;
+  padding: 2rem;
+  margin-top: 3rem;
+  border-radius: 8px;
+  flex-wrap: wrap;
+}
+
+.prescriptionSection p {
+  font-size: 1.1rem;
+  color: #0b2b4b;
+  font-weight: 500;
+  margin: 0;
+}
+
+.prescriptionSection strong {
+  font-weight: 700;
+}
+
+.button {
+  background-color: #eb4d4b;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #c0392b;
+}
+
+@media (max-width: 600px) {
+  .prescriptionSection {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .button {
+    width: 100%;
+    text-align: center;
+  }
+}

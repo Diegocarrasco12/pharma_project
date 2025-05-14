@@ -21,6 +21,12 @@ const Services = () => {
           <h3>Recetario magistral</h3>
           <p>Preparamos fórmulas personalizadas indicadas por tu médico, con respaldo profesional.</p>
         </div>
+        <div className={styles.card}>
+          <img src="/images/icon-asesoria.png" alt="Asesoría Farmacéutica" />
+          <h3>Asesoría Farmacéutica</h3>
+          <p>Resuelve tus dudas con la orientación de nuestros profesionales. Atención gratuita y confidencial.</p>
+        </div>
+
       </div>
     </section>
   );
