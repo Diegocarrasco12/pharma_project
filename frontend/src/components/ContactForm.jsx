@@ -1,0 +1,99 @@
+import React, { useState } from 'react';
+import styles from './ContactForm.module.css';
+import { toast } from 'react-toastify';
+import WhatsAppIcon from './icons/WhatsAppIcon';
+
+
+const ContactForm = () => {
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    message: ''
+  });
+  const [errors, setErrors] = useState({});
+
+  const whatsappNumber = '56912345678'; // ✅ Reemplázalo por tu número real
+
+  const validate = () => {
+    const newErrors = {};
+    if (!form.name.trim()) newErrors.name = 'El nombre es obligatorio';
+    if (!form.email.trim()) {
+      newErrors.email = 'El correo es obligatorio';
+    } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(form.email)) {
+      newErrors.email = 'El correo no es válido';
+    }
+    if (!form.message.trim() || form.message.length < 10) {
+      newErrors.message = 'El mensaje debe tener al menos 10 caracteres';
+    }
+    return newErrors;
+  };
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formErrors = validate();
+    setErrors(formErrors);
+
+    if (Object.keys(formErrors).length === 0) {
+      toast.success('Mensaje enviado correctamente');
+      setForm({ name: '', email: '', message: '' });
+    } else {
+      toast.error('Por favor corrige los errores del formulario');
+    }
+  };
+
+  return (
+    <div className={styles.contactContainer}>
+      <div className={styles.icon}>📬</div>
+      <h2>Contáctanos</h2>
+      <form onSubmit={handleSubmit} noValidate className={styles.form}>
+        <label>Nombre completo</label>
+        <input
+          type="text"
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          placeholder="Tu nombre"
+        />
+        {errors.name && <p className={styles.error}>{errors.name}</p>}
+
+        <label>Correo electrónico</label>
+        <input
+          type="email"
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+          placeholder="correo@ejemplo.com"
+        />
+        {errors.email && <p className={styles.error}>{errors.email}</p>}
+
+        <label>Mensaje</label>
+        <textarea
+          name="message"
+          value={form.message}
+          onChange={handleChange}
+          placeholder="Escribe tu mensaje aquí..."
+          rows={5}
+        />
+        {errors.message && <p className={styles.error}>{errors.message}</p>}
+
+        <button type="submit">Enviar mensaje</button>
+      </form>
+<a
+  href={`https://wa.me/${whatsappNumber}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  className={styles.whatsappButton}
+>
+  <WhatsAppIcon size={20} color="#fff" />
+  Hablar por WhatsApp
+</a>
+
+    </div>
+  );
+};
+
+export default ContactForm;

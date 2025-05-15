@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styles from './RegisterPage.module.css';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -9,6 +9,8 @@ const RegisterPage = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const firstErrorRef = useRef(null);
 
   const validate = () => {
     const newErrors = {};
@@ -18,7 +20,14 @@ const RegisterPage = () => {
     } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
       newErrors.email = 'El correo no es válido';
     }
-    if (!password) newErrors.password = 'La contraseña es obligatoria';
+    if (!password) {
+      newErrors.password = 'La contraseña es obligatoria';
+    } else if (password.length < 6) {
+      newErrors.password = 'La contraseña debe tener al menos 6 caracteres';
+    } else if (!/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
+      newErrors.password = 'Debe contener una mayúscula y un número';
+    }
+
     if (!confirmPassword) {
       newErrors.confirmPassword = 'Debes confirmar tu contraseña';
     } else if (password !== confirmPassword) {
@@ -27,10 +36,18 @@ const RegisterPage = () => {
     return newErrors;
   };
 
+  useEffect(() => {
+    if (firstErrorRef.current) {
+      firstErrorRef.current.focus();
+    }
+  }, [errors]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
     const formErrors = validate();
     setErrors(formErrors);
+    setLoading(false);
 
     if (Object.keys(formErrors).length === 0) {
       toast.success('Cuenta creada con éxito');
@@ -51,6 +68,7 @@ const RegisterPage = () => {
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Tu nombre"
+            ref={errors.name ? firstErrorRef : null}
           />
           {errors.name && <p className={styles.error}>{errors.name}</p>}
 
@@ -60,6 +78,7 @@ const RegisterPage = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="correo@ejemplo.com"
+            ref={errors.email && !errors.name ? firstErrorRef : null}
           />
           {errors.email && <p className={styles.error}>{errors.email}</p>}
 
@@ -69,6 +88,7 @@ const RegisterPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="********"
+            ref={errors.password && !errors.name && !errors.email ? firstErrorRef : null}
           />
           {errors.password && <p className={styles.error}>{errors.password}</p>}
 
@@ -78,12 +98,22 @@ const RegisterPage = () => {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="********"
+            ref={
+              errors.confirmPassword &&
+              !errors.name &&
+              !errors.email &&
+              !errors.password
+                ? firstErrorRef
+                : null
+            }
           />
           {errors.confirmPassword && (
             <p className={styles.error}>{errors.confirmPassword}</p>
           )}
 
-          <button type="submit">Registrarse</button>
+          <button type="submit" disabled={loading}>
+            {loading ? 'Registrando...' : 'Registrarse'}
+          </button>
         </form>
         <p className={styles.loginLink}>
           ¿Ya tienes una cuenta? <Link to="/login">Inicia sesión</Link>

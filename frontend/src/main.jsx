@@ -8,8 +8,9 @@ import UserProfile from './pages/UserProfile.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
+import ContactPage from './pages/ContactPage.jsx'; 
 
-import { CartProvider } from './context/CartContext'; // ✅ Importa el provider del carrito
+import { CartProvider } from './context/CartContext';
 
 import './styles/global.css';
 
@@ -24,6 +25,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="/perfil-admin" element={<AdminDashboard />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/registro" element={<RegisterPage />} />
+          <Route path="/contacto" element={<ContactPage />} /> 
         </Routes>
       </BrowserRouter>
     </CartProvider>

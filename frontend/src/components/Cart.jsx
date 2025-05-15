@@ -5,12 +5,19 @@ import { useCart } from '../context/CartContext';
 const Cart = () => {
   const { cartItems, isCartOpen, toggleCart, removeFromCart } = useCart();
 
-  if (!isCartOpen) return null;
+  // ✅ Cálculo del total
+  const total = cartItems.reduce((sum, item) => {
+    const price = parseFloat(item.price.replace(/\$|\./g, '').replace(',', '.'));
+    return sum + price;
+  }, 0);
 
   return (
-    <div className={styles.cartSidebar}>
+    <div
+      className={`${styles.cartSidebar} ${isCartOpen ? styles.open : ''}`}
+    >
       <button className={styles.closeButton} onClick={toggleCart}>✕</button>
       <h2>Mi Carrito</h2>
+      
       <ul className={styles.cartList}>
         {cartItems.length === 0 ? (
           <p className={styles.emptyMessage}>Tu carrito está vacío</p>
@@ -30,10 +37,17 @@ const Cart = () => {
         )}
       </ul>
 
+      {/* ✅ Mostrar total si hay productos */}
       {cartItems.length > 0 && (
-        <div className={styles.cartFooter}>
-          <button className={styles.checkoutButton}>Finalizar compra</button>
-        </div>
+        <>
+          <div className={styles.cartTotal}>
+            <p>Total: ${total.toLocaleString('es-CL')}</p>
+          </div>
+
+          <div className={styles.cartFooter}>
+            <button className={styles.checkoutButton}>Finalizar compra</button>
+          </div>
+        </>
       )}
     </div>
   );

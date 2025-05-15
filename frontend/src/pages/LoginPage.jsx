@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styles from './LoginPage.module.css';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -7,6 +7,8 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const firstErrorRef = useRef(null);
 
   const validate = () => {
     const newErrors = {};
@@ -21,14 +23,22 @@ const LoginPage = () => {
     return newErrors;
   };
 
+  useEffect(() => {
+    if (firstErrorRef.current) {
+      firstErrorRef.current.focus();
+    }
+  }, [errors]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
     const formErrors = validate();
     setErrors(formErrors);
+    setLoading(false);
 
     if (Object.keys(formErrors).length === 0) {
       toast.success('Inicio de sesión exitoso');
-      // Aquí irá tu lógica futura de autenticación
+      // Aquí irá lógica futura de autenticación
     } else {
       toast.error('Por favor corrige los errores del formulario');
     }
@@ -45,6 +55,7 @@ const LoginPage = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="correo@ejemplo.com"
+            ref={errors.email ? firstErrorRef : null}
           />
           {errors.email && <p className={styles.error}>{errors.email}</p>}
 
@@ -54,10 +65,13 @@ const LoginPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="********"
+            ref={errors.password && !errors.email ? firstErrorRef : null}
           />
           {errors.password && <p className={styles.error}>{errors.password}</p>}
 
-          <button type="submit">Ingresar</button>
+          <button type="submit" disabled={loading}>
+            {loading ? 'Ingresando...' : 'Ingresar'}
+          </button>
         </form>
         <p className={styles.registerLink}>
           ¿No tienes una cuenta? <Link to="/registro">Regístrate</Link>

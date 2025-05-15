@@ -6,7 +6,7 @@ import Services from './components/Services';
 import PrescriptionInfo from './components/PrescriptionInfo';
 import ProductCard from './components/ProductCard';
 import Footer from './components/Footer';
-import Cart from './components/Cart'; // ✅ Importar carrito
+import Cart from './components/Cart';
 import { ToastContainer } from 'react-toastify'; // ✅ Notificaciones
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -55,7 +55,7 @@ function App() {
       </main>
 
       <PrescriptionInfo />
-      <Cart /> {/* ✅ Carrito visual (sidebar) */}
+      <Cart />
       <Footer />
 
       <ToastContainer position="top-right" autoClose={3000} />
