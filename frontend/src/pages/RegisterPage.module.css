@@ -72,3 +72,18 @@
 .loginLink a:hover {
   text-decoration: underline;
 }
+.passwordContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.toggleButton {
+  margin-left: 8px;
+  padding: 6px 10px;
+  background-color: transparent;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  font-size: 0.9rem;
+}

@@ -9,6 +9,7 @@ import AdminDashboard from './pages/AdminDashboard.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
 import ContactPage from './pages/ContactPage.jsx'; 
+import NotFound from './pages/NotFound.jsx'; 
 
 import { CartProvider } from './context/CartContext';
 
@@ -26,6 +27,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="/login" element={<LoginPage />} />
           <Route path="/registro" element={<RegisterPage />} />
           <Route path="/contacto" element={<ContactPage />} /> 
+          <Route path="*" element={<NotFound />} /> {/* ✅ Ruta 404 */}
         </Routes>
       </BrowserRouter>
     </CartProvider>

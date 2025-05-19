@@ -10,6 +10,8 @@ const RegisterPage = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const firstErrorRef = useRef(null);
 
   const validate = () => {
@@ -51,7 +53,11 @@ const RegisterPage = () => {
 
     if (Object.keys(formErrors).length === 0) {
       toast.success('Cuenta creada con éxito');
-      // Aquí irá lógica futura de registro
+      // Reset del formulario
+      setName('');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
     } else {
       toast.error('Por favor corrige los errores del formulario');
     }
@@ -83,30 +89,48 @@ const RegisterPage = () => {
           {errors.email && <p className={styles.error}>{errors.email}</p>}
 
           <label>Contraseña</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="********"
-            ref={errors.password && !errors.name && !errors.email ? firstErrorRef : null}
-          />
+          <div className={styles.passwordContainer}>
+            <input
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="********"
+              ref={errors.password && !errors.name && !errors.email ? firstErrorRef : null}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className={styles.toggleButton}
+            >
+              {showPassword ? 'Ocultar' : 'Mostrar'}
+            </button>
+          </div>
           {errors.password && <p className={styles.error}>{errors.password}</p>}
 
           <label>Confirmar contraseña</label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            placeholder="********"
-            ref={
-              errors.confirmPassword &&
-              !errors.name &&
-              !errors.email &&
-              !errors.password
-                ? firstErrorRef
-                : null
-            }
-          />
+          <div className={styles.passwordContainer}>
+            <input
+              type={showConfirmPassword ? 'text' : 'password'}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="********"
+              ref={
+                errors.confirmPassword &&
+                !errors.name &&
+                !errors.email &&
+                !errors.password
+                  ? firstErrorRef
+                  : null
+              }
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className={styles.toggleButton}
+            >
+              {showConfirmPassword ? 'Ocultar' : 'Mostrar'}
+            </button>
+          </div>
           {errors.confirmPassword && (
             <p className={styles.error}>{errors.confirmPassword}</p>
           )}

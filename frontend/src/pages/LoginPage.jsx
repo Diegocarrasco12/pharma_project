@@ -8,6 +8,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const firstErrorRef = useRef(null);
 
   const validate = () => {
@@ -38,6 +39,9 @@ const LoginPage = () => {
 
     if (Object.keys(formErrors).length === 0) {
       toast.success('Inicio de sesión exitoso');
+      // Reset del formulario
+      setEmail('');
+      setPassword('');
       // Aquí irá lógica futura de autenticación
     } else {
       toast.error('Por favor corrige los errores del formulario');
@@ -60,13 +64,22 @@ const LoginPage = () => {
           {errors.email && <p className={styles.error}>{errors.email}</p>}
 
           <label>Contraseña</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="********"
-            ref={errors.password && !errors.email ? firstErrorRef : null}
-          />
+          <div className={styles.passwordContainer}>
+            <input
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="********"
+              ref={errors.password && !errors.email ? firstErrorRef : null}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className={styles.toggleButton}
+            >
+              {showPassword ? 'Ocultar' : 'Mostrar'}
+            </button>
+          </div>
           {errors.password && <p className={styles.error}>{errors.password}</p>}
 
           <button type="submit" disabled={loading}>
