@@ -3,10 +3,10 @@
 
 # Logs
 **/*.log
-logs
+logs/
 npm-debug.log*
 
-# Build
+# Build outputs
 frontend/dist/
 frontend/.vite/
 
