@@ -3,6 +3,8 @@ import styles from './LoginPage.module.css';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,22 +32,40 @@ const LoginPage = () => {
     }
   }, [errors]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     const formErrors = validate();
     setErrors(formErrors);
-    setLoading(false);
 
     if (Object.keys(formErrors).length === 0) {
-      toast.success('Inicio de sesión exitoso');
-      // Reset del formulario
-      setEmail('');
-      setPassword('');
-      // Aquí irá lógica futura de autenticación
+      try {
+        const response = await fetch(`${API_URL}/api/auth/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          toast.success('Inicio de sesión exitoso');
+          localStorage.setItem('token', data.token);
+          setEmail('');
+          setPassword('');
+          // Aquí puedes redirigir si deseas
+        } else {
+          toast.error(data.message || 'Credenciales incorrectas');
+        }
+      } catch (error) {
+        toast.error('Error al conectar con el servidor');
+      }
     } else {
       toast.error('Por favor corrige los errores del formulario');
     }
+    setLoading(false);
   };
 
   return (

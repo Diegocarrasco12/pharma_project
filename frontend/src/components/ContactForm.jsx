@@ -3,6 +3,8 @@ import styles from './ContactForm.module.css';
 import { toast } from 'react-toastify';
 import WhatsAppIcon from './icons/WhatsAppIcon';
 
+const API_URL = import.meta.env.VITE_API_URL;
+const whatsappNumber = '56983249135';
 
 const ContactForm = () => {
   const [form, setForm] = useState({
@@ -11,8 +13,6 @@ const ContactForm = () => {
     message: ''
   });
   const [errors, setErrors] = useState({});
-
-  const whatsappNumber = '56912345678'; // ✅ Reemplázalo por tu número real
 
   const validate = () => {
     const newErrors = {};
@@ -32,14 +32,30 @@ const ContactForm = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formErrors = validate();
     setErrors(formErrors);
 
     if (Object.keys(formErrors).length === 0) {
-      toast.success('Mensaje enviado correctamente');
-      setForm({ name: '', email: '', message: '' });
+      try {
+        const response = await fetch(`${API_URL}/api/contact`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(form)
+        });
+
+        if (response.ok) {
+          toast.success('Mensaje enviado correctamente');
+          setForm({ name: '', email: '', message: '' });
+        } else {
+          toast.error('Error al enviar el mensaje. Inténtalo más tarde.');
+        }
+      } catch (error) {
+        toast.error('Hubo un problema al conectar con el servidor');
+      }
     } else {
       toast.error('Por favor corrige los errores del formulario');
     }
@@ -82,16 +98,16 @@ const ContactForm = () => {
 
         <button type="submit">Enviar mensaje</button>
       </form>
-<a
-  href={`https://wa.me/${whatsappNumber}`}
-  target="_blank"
-  rel="noopener noreferrer"
-  className={styles.whatsappButton}
->
-  <WhatsAppIcon size={20} color="#fff" />
-  Hablar por WhatsApp
-</a>
 
+      <a
+        href={`https://wa.me/${whatsappNumber}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={styles.whatsappButton}
+      >
+        <WhatsAppIcon size={20} color="#fff" />
+        Hablar por WhatsApp
+      </a>
     </div>
   );
 };

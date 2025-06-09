@@ -3,6 +3,8 @@ import styles from './RegisterPage.module.css';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const RegisterPage = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -44,23 +46,40 @@ const RegisterPage = () => {
     }
   }, [errors]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     const formErrors = validate();
     setErrors(formErrors);
-    setLoading(false);
 
     if (Object.keys(formErrors).length === 0) {
-      toast.success('Cuenta creada con éxito');
-      // Reset del formulario
-      setName('');
-      setEmail('');
-      setPassword('');
-      setConfirmPassword('');
+      try {
+        const response = await fetch(`${API_URL}/api/auth/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ name, email, password }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          toast.success('Cuenta creada con éxito');
+          setName('');
+          setEmail('');
+          setPassword('');
+          setConfirmPassword('');
+        } else {
+          toast.error(data.message || 'Error al registrar');
+        }
+      } catch (error) {
+        toast.error('Error al conectar con el servidor');
+      }
     } else {
       toast.error('Por favor corrige los errores del formulario');
     }
+    setLoading(false);
   };
 
   return (

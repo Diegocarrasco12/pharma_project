@@ -29,6 +29,10 @@ export const CartProvider = ({ children }) => {
     );
   };
 
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
   };
@@ -37,6 +41,7 @@ export const CartProvider = ({ children }) => {
     cartItems,
     addToCart,
     removeFromCart,
+    clearCart,       // 🆕 función disponible en toda la app
     isCartOpen,
     toggleCart
   };
@@ -47,4 +52,3 @@ export const CartProvider = ({ children }) => {
     </CartContext.Provider>
   );
 };
-
