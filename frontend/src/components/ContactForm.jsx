@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from './ContactForm.module.css';
 import { toast } from 'react-toastify';
 import WhatsAppIcon from './icons/WhatsAppIcon';
+import ScrollTopLogo from './ScrollTopLogo'; // ✅ Importado para logo flotante
 
 const API_URL = import.meta.env.VITE_API_URL;
 const whatsappNumber = '56983249135';
@@ -108,6 +109,9 @@ const ContactForm = () => {
         <WhatsAppIcon size={20} color="#fff" />
         Hablar por WhatsApp
       </a>
+
+      {/* ✅ Logo flotante solo visible en móvil */}
+      <ScrollTopLogo />
     </div>
   );
 };

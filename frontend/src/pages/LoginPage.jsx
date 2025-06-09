@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from './LoginPage.module.css';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import ScrollTopLogo from '../components/ScrollTopLogo'; // ✅ agregado
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -110,6 +111,8 @@ const LoginPage = () => {
           ¿No tienes una cuenta? <Link to="/registro">Regístrate</Link>
         </p>
       </div>
+
+      <ScrollTopLogo /> {/* ✅ Logo flotante siempre visible en mobile */}
     </div>
   );
 };

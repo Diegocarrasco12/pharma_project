@@ -1,54 +1,147 @@
+/* === CONTENEDOR GENERAL === */
 .header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  width: 100%;
   background-color: #f9fafb;
-  padding: 1rem 2rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  flex-wrap: wrap;
-  position: relative;
   z-index: 10;
+  position: relative;
 }
 
+/* === TOPOBAR === */
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  flex-wrap: wrap;
+}
+
+.left, .center, .right {
+  display: flex;
+  align-items: center;
+}
+
+.left {
+  gap: 1rem;
+}
+
+.center {
+  flex: 1;
+  justify-content: center;
+}
+
+.right {
+  gap: 1rem;
+}
+
+/* === LOGO === */
 .logoLink {
   display: flex;
   align-items: center;
-  text-decoration: none;
 }
-
 .logo {
-  width: 150px;
-  max-width: 180px;
+  width: 120px;
+  height: auto;
 }
 
-
+/* === BUSCADOR === */
 .searchContainer {
-  flex: 1;
-  max-width: 600px;
-  margin: 0 1rem;
+  width: 100%;
+  max-width: 450px;
 }
-
 .searchContainer input {
   width: 100%;
   padding: 0.5rem 1rem;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #ccc;
   border-radius: 6px;
-  font-size: 0.9rem;
-}
-
-.account {
   font-size: 0.95rem;
-  font-weight: 500;
-  white-space: nowrap;
 }
 
-/* Logo flotante solo visible en mobile */
+/* === CARRITO === */
+.cartButton {
+  background-color: #0077cc;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.cartCount {
+  margin-left: 6px;
+}
+
+/* === HAMBURGUESA === */
+.menuToggle {
+  display: none;
+  font-size: 1.8rem;
+  background: none;
+  border: none;
+  color: #0077cc;
+  cursor: pointer;
+}
+
+/* === NAV MENU === */
+.navMenu {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 0.8rem 0;
+  flex-wrap: wrap;
+}
+.navMenu a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  .center {
+    display: none;
+  }
+
+  .logo {
+    width: 100px;
+  }
+
+  .cartButton {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.9rem;
+  }
+
+  .menuToggle {
+    display: block;
+  }
+
+  .navMenu {
+    display: none;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.8rem;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  .showMobile {
+    display: flex !important;
+  }
+
+  .logoMobileFloating {
+    display: block !important;
+    width: 64px;
+    height: 64px;
+    padding: 8px;
+  }
+}
+
+/* === LOGO FLOTANTE GENERAL === */
 .logoMobileFloating {
   position: fixed;
   bottom: 1rem;
   left: 1rem;
-  width: 48px;
-  height: 48px;
   background: #ffffff;
   padding: 6px;
   border-radius: 8px;
@@ -56,55 +149,8 @@
   z-index: 999;
   display: none;
 }
-
 .logoMobileFloating img {
   width: 100%;
   height: auto;
   object-fit: contain;
-}
-
-@media (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1rem;
-  }
-
-  .logo {
-    width: 100px;
-    height: auto;
-    object-fit: contain;
-  }
-
-  .searchContainer {
-    margin: 0;
-  }
-
-  .account {
-    align-self: flex-end;
-  }
-
-  .logoMobileFloating {
-    display: block;
-  }
-
-  .logoMobileFloating {
-    width: 64px;
-    height: 64px;
-    padding: 8px;
-  }
-}
-.cartButton {
-  background-color: #0077cc;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.cartButton:hover {
-  background-color: #005fa3;
 }

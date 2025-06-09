@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from './RegisterPage.module.css';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import ScrollTopLogo from '../components/ScrollTopLogo';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -21,7 +22,7 @@ const RegisterPage = () => {
     if (!name) newErrors.name = 'El nombre es obligatorio';
     if (!email) {
       newErrors.email = 'El correo es obligatorio';
-    } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+    } else if (!/^[\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$/.test(email)) {
       newErrors.email = 'El correo no es válido';
     }
     if (!password) {
@@ -162,6 +163,7 @@ const RegisterPage = () => {
           ¿Ya tienes una cuenta? <Link to="/login">Inicia sesión</Link>
         </p>
       </div>
+      <ScrollTopLogo />
     </div>
   );
 };
