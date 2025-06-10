@@ -10,8 +10,9 @@
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 320px 1fr; /* Imagen fija, contenido flexible */
   gap: 40px;
+  align-items: center;
 }
 
 .imageContainer {
@@ -31,14 +32,15 @@
 .details {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  text-align: left; /* Base */
 }
 
 .title {
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: bold;
   margin-bottom: 10px;
   color: #1e1e1e;
+  text-align: left; /* ✅ Forzado */
 }
 
 .price {
@@ -46,20 +48,23 @@
   font-weight: 600;
   color: #2e7d32;
   margin-bottom: 20px;
+  text-align: left; /* ✅ Forzado */
 }
 
 .section {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .sectionTitle {
   font-weight: 600;
   margin-bottom: 6px;
   color: #333;
+  text-align: left; /* ✅ Forzado */
 }
 
 .sectionText {
   color: #555;
+  text-align: left; /* ✅ Forzado */
 }
 
 .button {
@@ -78,4 +83,35 @@
 
 .button:hover {
   background-color: #125ea2;
+}
+
+/* ✅ Mobile */
+@media (max-width: 768px) {
+  .card {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+
+  .imageContainer {
+    margin-bottom: 30px;
+  }
+
+  .image {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .details {
+    text-align: center;
+    padding-left: 0;
+  }
+
+  .title,
+  .price,
+  .sectionTitle,
+  .sectionText {
+    text-align: center;
+  }
 }

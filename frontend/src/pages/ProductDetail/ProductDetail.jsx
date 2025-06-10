@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import products from './products';
 
@@ -12,6 +12,11 @@ import styles from './ProductDetail.module.css';
 function ProductDetail() {
   const { id } = useParams();
   const product = products.find((p) => p.id === parseInt(id));
+
+  // ✅ Forzar scroll al top al cambiar de producto
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [id]);
 
   if (!product) {
     return (
