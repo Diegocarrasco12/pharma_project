@@ -8,8 +8,9 @@ import UserProfile from './pages/UserProfile.jsx';
 import AdminDashboard from './pages/AdminDashboard.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
-import ContactPage from './pages/ContactPage.jsx'; 
-import NotFound from './pages/NotFound.jsx'; 
+import ContactPage from './pages/ContactPage.jsx';
+import NotFound from './pages/NotFound.jsx';
+import ProductDetail from './pages/ProductDetail/ProductDetail.jsx'; // ✅ NUEVA RUTA
 
 import { CartProvider } from './context/CartContext';
 
@@ -17,17 +18,18 @@ import './styles/global.css';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <CartProvider> {/* ✅ ENVUELVE TODO */}
+    <CartProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />} />
+          <Route path="/producto/:id" element={<ProductDetail />} /> {/* ✅ IMPORTANTE */}
           <Route path="/como-comprar-con-receta" element={<PrescriptionPage />} />
           <Route path="/perfil-usuario" element={<UserProfile />} />
           <Route path="/perfil-admin" element={<AdminDashboard />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/registro" element={<RegisterPage />} />
-          <Route path="/contacto" element={<ContactPage />} /> 
-          <Route path="*" element={<NotFound />} /> {/* ✅ Ruta 404 */}
+          <Route path="/contacto" element={<ContactPage />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </CartProvider>

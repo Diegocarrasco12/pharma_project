@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'; 
 import Header from './components/Header';
 import HeroCarousel from './components/HeroCarousel';
 import Services from './components/Services';
@@ -21,12 +22,54 @@ function App() {
       <Services />
 
       <main className={styles.productGrid}>
-        <ProductCard name="Vitamina C 1000mg" price="$5.990" image="/images/producto-vitamina-c.jpg" />
-        <ProductCard name="Mascarilla KN95" price="$1.500" image="/images/producto-mascarilla-kn95.jpg" />
-        <ProductCard name="Gel Analgésico" price="$6.990" image="/images/producto-gel-analgesico.jpg" />
-        <ProductCard name="Termómetro Digital" price="$4.200" image="/images/producto-termometro-digital.jpg" />
-        <ProductCard name="Vitamina D3" price="$7.990" image="/images/producto-vitamina-d3.jpg" />
-        <ProductCard name="Alcohol Gel 70%" price="$2.500" image="/images/producto-alcohol-gel.jpg" />
+        <Link to="/producto/1">
+          <ProductCard
+            id={1}
+            name="Vitamina C 1000mg"
+            price="$5.990"
+            image="/images/producto-vitamina-c.jpg"
+          />
+        </Link>
+        <Link to="/producto/2">
+          <ProductCard
+            id={2}
+            name="Mascarilla KN95"
+            price="$1.500"
+            image="/images/producto-mascarilla-kn95.jpg"
+          />
+        </Link>
+        <Link to="/producto/3">
+          <ProductCard
+            id={3}
+            name="Gel Analgésico"
+            price="$6.990"
+            image="/images/producto-gel-analgesico.jpg"
+          />
+        </Link>
+        <Link to="/producto/4">
+          <ProductCard
+            id={4}
+            name="Termómetro Digital"
+            price="$4.200"
+            image="/images/producto-termometro-digital.jpg"
+          />
+        </Link>
+        <Link to="/producto/5">
+          <ProductCard
+            id={5}
+            name="Vitamina D3"
+            price="$7.990"
+            image="/images/producto-vitamina-d3.jpg"
+          />
+        </Link>
+        <Link to="/producto/6">
+          <ProductCard
+            id={6}
+            name="Alcohol Gel 70%"
+            price="$2.500"
+            image="/images/producto-alcohol-gel.jpg"
+          />
+        </Link>
       </main>
 
       <PrescriptionInfo />
@@ -40,4 +83,3 @@ function App() {
 }
 
 export default App;
-
