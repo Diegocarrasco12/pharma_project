@@ -10,9 +10,11 @@ import LoginPage from './pages/LoginPage.jsx';
 import RegisterPage from './pages/RegisterPage.jsx';
 import ContactPage from './pages/ContactPage.jsx';
 import NotFound from './pages/NotFound.jsx';
-import ProductDetail from './pages/ProductDetail/ProductDetail.jsx'; // ✅ NUEVA RUTA
+import ProductDetail from './pages/ProductDetail/ProductDetail.jsx';
+import AdminMessages from './components/AdminMessages.jsx'; // ✅ NUEVA
 
 import { CartProvider } from './context/CartContext';
+import ProtectedRoute from './components/ProtectedRoute.jsx'; // ✅ NUEVO
 
 import './styles/global.css';
 
@@ -22,10 +24,28 @@ createRoot(document.getElementById('root')).render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />} />
-          <Route path="/producto/:id" element={<ProductDetail />} /> {/* ✅ IMPORTANTE */}
+          <Route path="/producto/:id" element={<ProductDetail />} />
           <Route path="/como-comprar-con-receta" element={<PrescriptionPage />} />
-          <Route path="/perfil-usuario" element={<UserProfile />} />
-          <Route path="/perfil-admin" element={<AdminDashboard />} />
+
+          {/* ✅ Rutas protegidas */}
+          <Route path="/perfil-usuario" element={
+            <ProtectedRoute>
+              <UserProfile />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/perfil-admin" element={
+            <ProtectedRoute requireAdmin={true}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/admin/mensajes" element={
+            <ProtectedRoute requireAdmin={true}>
+              <AdminMessages />
+            </ProtectedRoute>
+          } />
+
           <Route path="/login" element={<LoginPage />} />
           <Route path="/registro" element={<RegisterPage />} />
           <Route path="/contacto" element={<ContactPage />} />

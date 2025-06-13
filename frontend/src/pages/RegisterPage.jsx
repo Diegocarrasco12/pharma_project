@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './RegisterPage.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ScrollTopLogo from '../components/ScrollTopLogo';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -16,13 +18,14 @@ const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const firstErrorRef = useRef(null);
+  const navigate = useNavigate();
 
   const validate = () => {
     const newErrors = {};
     if (!name) newErrors.name = 'El nombre es obligatorio';
     if (!email) {
       newErrors.email = 'El correo es obligatorio';
-    } else if (!/^[\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$/.test(email)) {
+    } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
       newErrors.email = 'El correo no es válido';
     }
     if (!password) {
@@ -71,6 +74,7 @@ const RegisterPage = () => {
           setEmail('');
           setPassword('');
           setConfirmPassword('');
+          navigate('/login');
         } else {
           toast.error(data.message || 'Error al registrar');
         }
@@ -84,87 +88,91 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className={styles.registerContainer}>
-      <div className={styles.registerBox}>
-        <h1>Crear cuenta</h1>
-        <form className={styles.form} onSubmit={handleSubmit} noValidate>
-          <label>Nombre completo</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Tu nombre"
-            ref={errors.name ? firstErrorRef : null}
-          />
-          {errors.name && <p className={styles.error}>{errors.name}</p>}
-
-          <label>Correo electrónico</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="correo@ejemplo.com"
-            ref={errors.email && !errors.name ? firstErrorRef : null}
-          />
-          {errors.email && <p className={styles.error}>{errors.email}</p>}
-
-          <label>Contraseña</label>
-          <div className={styles.passwordContainer}>
+    <>
+      <Header />
+      <div className={styles.registerContainer}>
+        <div className={styles.registerBox}>
+          <h1>Crear cuenta</h1>
+          <form className={styles.form} onSubmit={handleSubmit} noValidate>
+            <label>Nombre completo</label>
             <input
-              type={showPassword ? 'text' : 'password'}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="********"
-              ref={errors.password && !errors.name && !errors.email ? firstErrorRef : null}
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Tu nombre"
+              ref={errors.name ? firstErrorRef : null}
             />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className={styles.toggleButton}
-            >
-              {showPassword ? 'Ocultar' : 'Mostrar'}
-            </button>
-          </div>
-          {errors.password && <p className={styles.error}>{errors.password}</p>}
+            {errors.name && <p className={styles.error}>{errors.name}</p>}
 
-          <label>Confirmar contraseña</label>
-          <div className={styles.passwordContainer}>
+            <label>Correo electrónico</label>
             <input
-              type={showConfirmPassword ? 'text' : 'password'}
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="********"
-              ref={
-                errors.confirmPassword &&
-                !errors.name &&
-                !errors.email &&
-                !errors.password
-                  ? firstErrorRef
-                  : null
-              }
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="correo@ejemplo.com"
+              ref={errors.email && !errors.name ? firstErrorRef : null}
             />
-            <button
-              type="button"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className={styles.toggleButton}
-            >
-              {showConfirmPassword ? 'Ocultar' : 'Mostrar'}
-            </button>
-          </div>
-          {errors.confirmPassword && (
-            <p className={styles.error}>{errors.confirmPassword}</p>
-          )}
+            {errors.email && <p className={styles.error}>{errors.email}</p>}
 
-          <button type="submit" disabled={loading}>
-            {loading ? 'Registrando...' : 'Registrarse'}
-          </button>
-        </form>
-        <p className={styles.loginLink}>
-          ¿Ya tienes una cuenta? <Link to="/login">Inicia sesión</Link>
-        </p>
+            <label>Contraseña</label>
+            <div className={styles.passwordContainer}>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="********"
+                ref={errors.password && !errors.name && !errors.email ? firstErrorRef : null}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className={styles.toggleButton}
+              >
+                {showPassword ? 'Ocultar' : 'Mostrar'}
+              </button>
+            </div>
+            {errors.password && <p className={styles.error}>{errors.password}</p>}
+
+            <label>Confirmar contraseña</label>
+            <div className={styles.passwordContainer}>
+              <input
+                type={showConfirmPassword ? 'text' : 'password'}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="********"
+                ref={
+                  errors.confirmPassword &&
+                  !errors.name &&
+                  !errors.email &&
+                  !errors.password
+                    ? firstErrorRef
+                    : null
+                }
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className={styles.toggleButton}
+              >
+                {showConfirmPassword ? 'Ocultar' : 'Mostrar'}
+              </button>
+            </div>
+            {errors.confirmPassword && (
+              <p className={styles.error}>{errors.confirmPassword}</p>
+            )}
+
+            <button type="submit" disabled={loading}>
+              {loading ? 'Registrando...' : 'Registrarse'}
+            </button>
+          </form>
+          <p className={styles.loginLink}>
+            ¿Ya tienes una cuenta? <Link to="/login">Inicia sesión</Link>
+          </p>
+        </div>
       </div>
+      <Footer />
       <ScrollTopLogo />
-    </div>
+    </>
   );
 };
 

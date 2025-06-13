@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './LoginPage.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import ScrollTopLogo from '../components/ScrollTopLogo'; // ✅ agregado
 
@@ -13,6 +13,7 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const firstErrorRef = useRef(null);
+  const navigate = useNavigate(); // ✅ para redireccionar
 
   const validate = () => {
     const newErrors = {};
@@ -54,9 +55,19 @@ const LoginPage = () => {
         if (response.ok) {
           toast.success('Inicio de sesión exitoso');
           localStorage.setItem('token', data.token);
+          if (data.role) {
+            localStorage.setItem('role', data.role); // ✅ guarda el rol si viene
+          }
+
           setEmail('');
           setPassword('');
-          // Aquí puedes redirigir si deseas
+
+          // ✅ Redirecciona según rol
+          if (data.role === 'admin') {
+            navigate('/admin/mensajes');
+          } else {
+            navigate('/perfil-usuario');
+          }
         } else {
           toast.error(data.message || 'Credenciales incorrectas');
         }
