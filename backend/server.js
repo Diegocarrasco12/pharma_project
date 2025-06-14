@@ -7,7 +7,7 @@ import pool from './config/db.js';
 import productRoutes from './routes/productRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import authRoutes from './routes/authRoutes.js';
-import userRoutes from './routes/userRoutes.js'; 
+import userRoutes from './routes/userRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
 
 dotenv.config();
@@ -23,12 +23,17 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Ruta raíz para Render
+// Ruta raíz para verificación manual
 app.get('/', (req, res) => {
   res.send('Servidor backend activo');
 });
 
-// Ruta de prueba
+// Ruta de verificación requerida por Render
+app.get('/healthz', (req, res) => {
+  res.status(200).send('OK');
+});
+
+// Ruta de prueba para la API
 app.get('/api', (req, res) => {
   res.json({ message: '¡API de Pharma Project funcionando correctamente!' });
 });
@@ -38,20 +43,16 @@ pool.connect()
   .then(() => console.log('🟢 Conexión a PostgreSQL exitosa'))
   .catch((err) => console.error('🔴 Error al conectar a PostgreSQL:', err));
 
-// Usar rutas
+// Usar rutas definidas
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes); 
+app.use('/api/users', userRoutes);
 app.use('/api/contact', contactRoutes);
 
 // Iniciar servidor
 const PORT = process.env.PORT || 5000;
-const HOST = '0.0.0.0'; // ✅ Importante para Render
-
-app.get('/healthz', (req, res) => {
-  res.status(200).send('OK');
-});
+const HOST = '0.0.0.0'; // Necesario para Render
 
 app.listen(PORT, HOST, () => {
   console.log(`✅ Servidor escuchando en http://${HOST}:${PORT}`);
