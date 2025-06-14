@@ -51,9 +51,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/contact', contactRoutes);
 
 // Iniciar servidor
-const PORT = process.env.PORT || 5000;
-const HOST = '0.0.0.0'; // Necesario para Render
-
-app.listen(PORT, HOST, () => {
-  console.log(`✅ Servidor escuchando en http://${HOST}:${PORT}`);
+const PORT = process.env.PORT || 3000; // Usa el puerto de Render o 3000 como fallback
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
