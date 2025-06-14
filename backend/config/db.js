@@ -1,4 +1,4 @@
-import pkg from 'pg';
+import { Pool } from 'pg';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -11,6 +11,5 @@ const pool = new Pool({
   database: process.env.DB_NAME,
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
 });
-
 
 export default pool;
