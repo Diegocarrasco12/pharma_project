@@ -47,7 +47,12 @@ app.use('/api/contact', contactRoutes);
 
 // Iniciar servidor
 const PORT = process.env.PORT || 5000;
+const HOST = '0.0.0.0'; // ✅ Importante para Render
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`✅ Servidor backend escuchando en el puerto ${PORT}`);
+app.get('/healthz', (req, res) => {
+  res.status(200).send('OK');
+});
+
+app.listen(PORT, HOST, () => {
+  console.log(`✅ Servidor escuchando en http://${HOST}:${PORT}`);
 });
