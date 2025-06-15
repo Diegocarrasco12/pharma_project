@@ -15,8 +15,17 @@ dotenv.config();
 const app = express();
 app.set('trust proxy', true); // ✅ IMPORTANTE para Render
 
+// ✅ CORS CONFIGURADO PARA EL FRONTEND EN RENDER
+const allowedOrigins = [
+  'https://pharma-project-k64p.onrender.com' // 👈 Reemplaza si cambia tu URL de frontend
+];
+
+app.use(cors({
+  origin: allowedOrigins,
+  credentials: true,
+}));
+
 // Middlewares
-app.use(cors());
 app.use(express.json());
 
 // Servir archivos estáticos
