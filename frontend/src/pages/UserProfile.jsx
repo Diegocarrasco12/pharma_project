@@ -3,7 +3,7 @@ import styles from './UserProfile.module.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ScrollTopLogo from '../components/ScrollTopLogo';
-import { toast } from 'react-toastify'; // ✅ AÑADIDO
+import { toast } from 'react-toastify';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -16,6 +16,15 @@ const UserProfile = () => {
   const [loading, setLoading] = useState(false);
 
   const token = localStorage.getItem('token');
+
+  // ✅ Mostrar toast si viene de otra página
+  useEffect(() => {
+    const message = localStorage.getItem('toastMessage');
+    if (message) {
+      toast.success(message);
+      localStorage.removeItem('toastMessage');
+    }
+  }, []);
 
   useEffect(() => {
     const fetchProfile = async () => {

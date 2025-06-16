@@ -28,6 +28,15 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem('token');
 
+  // ✅ Mostrar toast si existe uno almacenado
+  useEffect(() => {
+    const message = localStorage.getItem('toastMessage');
+    if (message) {
+      toast.success(message);
+      localStorage.removeItem('toastMessage');
+    }
+  }, []);
+
   useEffect(() => {
     fetch(`${API_URL}/api/users/profile`, {
       headers: { Authorization: `Bearer ${token}` }
@@ -214,6 +223,7 @@ const AdminDashboard = () => {
           <h1>Panel de Administrador</h1>
         </header>
 
+        {/* Mi Perfil */}
         <section className={styles.section}>
           <h2>Mi Perfil</h2>
           <div className={styles.profileForm}>
@@ -227,6 +237,7 @@ const AdminDashboard = () => {
           </div>
         </section>
 
+        {/* Usuarios */}
         <section className={styles.section}>
           <h2>Usuarios Registrados</h2>
           <div className={styles.userList}>
@@ -245,6 +256,7 @@ const AdminDashboard = () => {
           </div>
         </section>
 
+        {/* Productos */}
         <section className={styles.section}>
           <h2>Gestor de Productos</h2>
           <div className={styles.productActions}>

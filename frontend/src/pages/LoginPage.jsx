@@ -53,20 +53,19 @@ const LoginPage = () => {
         const data = await response.json();
 
         if (response.ok) {
-          toast.success('Inicio de sesión exitoso');
           localStorage.setItem('token', data.token);
-
           if (data.user?.role) {
             localStorage.setItem('role', data.user.role);
           }
 
+          // ✅ Guardamos el toast para que se muestre en la próxima pantalla
+          localStorage.setItem('toastMessage', 'Inicio de sesión exitoso');
+
           setEmail('');
           setPassword('');
 
-          // ⏳ Espera para mostrar el toast antes de redirigir
-          setTimeout(() => {
-            navigate(data.user?.role === 'admin' ? '/perfil-admin' : '/perfil-usuario');
-          }, 500);
+          // ✅ Redireccionamos inmediatamente sin toast aquí
+          navigate(data.user?.role === 'admin' ? '/perfil-admin' : '/perfil-usuario');
         } else {
           toast.error(data.message || 'Credenciales incorrectas');
         }
