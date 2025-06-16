@@ -1,9 +1,13 @@
+.pageWrapper {
+  background-color: #f5f7fa;
+  padding: 60px 20px;
+  min-height: calc(100vh - 140px); /* espacio entre header y footer */
+}
+
 .loginContainer {
-  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f5f7fa;
 }
 
 .loginBox {
@@ -79,6 +83,7 @@
   margin-top: -0.5rem;
   margin-bottom: 0.5rem;
 }
+
 .passwordContainer {
   position: relative;
   display: flex;

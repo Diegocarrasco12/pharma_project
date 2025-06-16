@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import styles from './LoginPage.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import ScrollTopLogo from '../components/ScrollTopLogo'; // ✅ agregado
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import ScrollTopLogo from '../components/ScrollTopLogo';
+import styles from './LoginPage.module.css';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -13,7 +15,7 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const firstErrorRef = useRef(null);
-  const navigate = useNavigate(); // ✅ para redireccionar
+  const navigate = useNavigate();
 
   const validate = () => {
     const newErrors = {};
@@ -56,13 +58,12 @@ const LoginPage = () => {
           toast.success('Inicio de sesión exitoso');
           localStorage.setItem('token', data.token);
           if (data.role) {
-            localStorage.setItem('role', data.role); // ✅ guarda el rol si viene
+            localStorage.setItem('role', data.role);
           }
 
           setEmail('');
           setPassword('');
 
-          // ✅ Redirecciona según rol
           if (data.role === 'admin') {
             navigate('/admin/mensajes');
           } else {
@@ -81,50 +82,56 @@ const LoginPage = () => {
   };
 
   return (
-    <div className={styles.loginContainer}>
-      <div className={styles.loginBox}>
-        <h1>Iniciar sesión</h1>
-        <form className={styles.form} onSubmit={handleSubmit} noValidate>
-          <label>Correo electrónico</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="correo@ejemplo.com"
-            ref={errors.email ? firstErrorRef : null}
-          />
-          {errors.email && <p className={styles.error}>{errors.email}</p>}
+    <>
+      <Header />
+      <div className={styles.pageWrapper}>
+        <div className={styles.loginContainer}>
+          <div className={styles.loginBox}>
+            <h1>Iniciar sesión</h1>
+            <form className={styles.form} onSubmit={handleSubmit} noValidate>
+              <label>Correo electrónico</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="correo@ejemplo.com"
+                ref={errors.email ? firstErrorRef : null}
+              />
+              {errors.email && <p className={styles.error}>{errors.email}</p>}
 
-          <label>Contraseña</label>
-          <div className={styles.passwordContainer}>
-            <input
-              type={showPassword ? 'text' : 'password'}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="********"
-              ref={errors.password && !errors.email ? firstErrorRef : null}
-            />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className={styles.toggleButton}
-            >
-              {showPassword ? 'Ocultar' : 'Mostrar'}
-            </button>
+              <label>Contraseña</label>
+              <div className={styles.passwordContainer}>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="********"
+                  ref={errors.password && !errors.email ? firstErrorRef : null}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className={styles.toggleButton}
+                >
+                  {showPassword ? 'Ocultar' : 'Mostrar'}
+                </button>
+              </div>
+              {errors.password && <p className={styles.error}>{errors.password}</p>}
+
+              <button type="submit" disabled={loading}>
+                {loading ? 'Ingresando...' : 'Ingresar'}
+              </button>
+            </form>
+            <p className={styles.registerLink}>
+              ¿No tienes una cuenta? <Link to="/registro">Regístrate</Link>
+            </p>
           </div>
-          {errors.password && <p className={styles.error}>{errors.password}</p>}
+        </div>
 
-          <button type="submit" disabled={loading}>
-            {loading ? 'Ingresando...' : 'Ingresar'}
-          </button>
-        </form>
-        <p className={styles.registerLink}>
-          ¿No tienes una cuenta? <Link to="/registro">Regístrate</Link>
-        </p>
+        <ScrollTopLogo />
       </div>
-
-      <ScrollTopLogo /> {/* ✅ Logo flotante siempre visible en mobile */}
-    </div>
+      <Footer />
+    </>
   );
 };
 
