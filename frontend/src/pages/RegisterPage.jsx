@@ -20,6 +20,15 @@ const RegisterPage = () => {
   const firstErrorRef = useRef(null);
   const navigate = useNavigate();
 
+  // ✅ Mostrar mensaje diferido si existe
+  useEffect(() => {
+    const toastMessage = localStorage.getItem('toastMessage');
+    if (toastMessage) {
+      toast.success(toastMessage);
+      localStorage.removeItem('toastMessage');
+    }
+  }, []);
+
   const validate = () => {
     const newErrors = {};
     if (!name.trim()) newErrors.name = 'El nombre es obligatorio';
@@ -64,7 +73,8 @@ const RegisterPage = () => {
         const data = await response.json();
 
         if (response.ok) {
-          toast.success('Cuenta creada con éxito');
+          // ✅ Guardar mensaje para mostrarlo tras redirigir
+          localStorage.setItem('toastMessage', 'Cuenta creada con éxito');
           setName('');
           setEmail('');
           setPassword('');
@@ -92,7 +102,6 @@ const RegisterPage = () => {
         <div className={styles.registerBox}>
           <h1>Crear cuenta</h1>
           <form className={styles.form} onSubmit={handleSubmit} noValidate>
-            {/* Nombre */}
             <label>Nombre completo</label>
             <input
               type="text"
@@ -106,7 +115,6 @@ const RegisterPage = () => {
             />
             {errors.name && <p id="error-name" className={styles.error}>❌ {errors.name}</p>}
 
-            {/* Email */}
             <label>Correo electrónico</label>
             <input
               type="email"
@@ -120,7 +128,6 @@ const RegisterPage = () => {
             />
             {errors.email && <p id="error-email" className={styles.error}>❌ {errors.email}</p>}
 
-            {/* Contraseña */}
             <label>Contraseña</label>
             <div className={styles.passwordContainer}>
               <input
@@ -143,7 +150,6 @@ const RegisterPage = () => {
             </div>
             {errors.password && <p id="error-password" className={styles.error}>❌ {errors.password}</p>}
 
-            {/* Confirmar contraseña */}
             <label>Confirmar contraseña</label>
             <div className={styles.passwordContainer}>
               <input

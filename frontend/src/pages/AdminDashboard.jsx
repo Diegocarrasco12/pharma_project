@@ -28,9 +28,17 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem('token');
 
-  // ✅ Cargar datos y mostrar toast si viene de otra acción
+  // ✅ Mostrar mensaje de toast una sola vez si existe
   useEffect(() => {
-    const fetchData = async () => {
+    const msg = localStorage.getItem('toastMessage');
+    if (msg) {
+      localStorage.removeItem('toastMessage');
+      toast.success(msg);
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
       try {
         const res = await fetch(`${API_URL}/api/users/profile`, {
           headers: { Authorization: `Bearer ${token}` }
@@ -42,18 +50,12 @@ const AdminDashboard = () => {
           email: data.email || '',
           profileImage: data.profile_image || ''
         });
-
-        const toastMsg = localStorage.getItem('toastMessage');
-        if (toastMsg) {
-          toast.success(toastMsg);
-          localStorage.removeItem('toastMessage');
-        }
       } catch {
         toast.error('Error al cargar perfil');
       }
     };
 
-    fetchData();
+    fetchProfile();
   }, [token]);
 
   useEffect(() => {

@@ -17,6 +17,15 @@ const LoginPage = () => {
   const firstErrorRef = useRef(null);
   const navigate = useNavigate();
 
+  // ✅ Mostrar toast si hay mensaje guardado
+  useEffect(() => {
+    const toastMessage = localStorage.getItem('toastMessage');
+    if (toastMessage) {
+      toast.success(toastMessage);
+      localStorage.removeItem('toastMessage');
+    }
+  }, []);
+
   const validate = () => {
     const newErrors = {};
     if (!email) {
@@ -58,13 +67,12 @@ const LoginPage = () => {
             localStorage.setItem('role', data.user.role);
           }
 
-          // ✅ Guardamos el mensaje para mostrarlo después del redirect
+          // ✅ Guardamos el toast para mostrarlo tras el redirect
           localStorage.setItem('toastMessage', 'Inicio de sesión exitoso');
 
           setEmail('');
           setPassword('');
 
-          // ✅ Redirigimos sin mostrar toast aquí
           navigate(data.user?.role === 'admin' ? '/perfil-admin' : '/perfil-usuario');
         } else {
           toast.error(data.message || 'Credenciales incorrectas');
