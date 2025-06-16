@@ -28,3 +28,5 @@ router.get('/profile', verifyToken, getUserProfile);
 router.put('/profile', verifyToken, updateUserProfile); // 🔥 Esta línea faltaba
 
 export default router;
+
+
