@@ -71,6 +71,7 @@ const UserProfile = () => {
       if (res.ok) {
         alert('Perfil actualizado correctamente');
         localStorage.setItem('profileImage', data.profile_image || '');
+        setUser(data.user); // ✅ actualiza el estado
       } else {
         alert(data.message || 'Error al actualizar perfil');
       }
@@ -90,7 +91,7 @@ const UserProfile = () => {
 
         <div className={styles.imageContainer}>
           <img
-            src={imagePreview || '/images/default-user.jpg'}
+            src={imagePreview || '/uploads/default-user.jpeg'} // ✅ RUTA ACTUALIZADA
             alt="Foto de perfil"
             className={styles.profileImage}
           />

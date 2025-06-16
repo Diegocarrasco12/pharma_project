@@ -3,7 +3,8 @@ import {
   getAllUsers,
   updateUserRole,
   uploadProfileImage,
-  getUserProfile
+  getUserProfile,
+  updateUserProfile // ✅ Agregamos esto
 } from '../controllers/userController.js';
 
 import verifyToken from '../utils/verifyToken.js';
@@ -22,5 +23,8 @@ router.put('/profile-image', verifyToken, uploadProfileImage);
 
 // ✅ Obtener perfil del usuario logueado
 router.get('/profile', verifyToken, getUserProfile);
+
+// ✅ Actualizar nombre, edad e imagen (usuario logueado)
+router.put('/profile', verifyToken, updateUserProfile); // 🔥 Esta línea faltaba
 
 export default router;
