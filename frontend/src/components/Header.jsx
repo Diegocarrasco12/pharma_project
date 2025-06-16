@@ -133,19 +133,22 @@ export default function Header() {
           {token && (
             <>
               <div className={styles.profileSection}>
-                {profileImage ? (
-                  <img src={profileImage} alt="Perfil" className={styles.profileImage} />
-                ) : (
-                  <label className={styles.uploadLabel}>
-                    📷
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                      style={{ display: 'none' }}
-                    />
-                  </label>
-                )}
+                 {profileImage ? (
+                 <Link to={role === 'admin' ? '/perfil-admin' : '/perfil-usuario'}>
+                 <img src={profileImage} alt="Perfil" className={styles.profileImage} />
+                 </Link>
+                      ) : (
+                 <label className={styles.uploadLabel}>
+                   📷
+                 <input
+                 type="file"
+                 accept="image/*"
+                 onChange={handleImageChange}
+                style={{ display: 'none' }}
+                 />
+               </label>
+          )}
+
               </div>
               <Link to={role === 'admin' ? '/perfil-admin' : '/perfil-usuario'}>
                 Perfil
