@@ -14,16 +14,20 @@ const verifyToken = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
 
-    // Validar que el token tenga al menos `id`
     if (!decoded?.id) {
       return res.status(401).json({ message: 'Token inválido (sin ID de usuario)' });
     }
 
-    req.user = decoded; // { id, role }
+
+    req.user = {
+      id: decoded.id,
+      role: decoded.role || 'user', 
+    };
+
     next();
   } catch (error) {
     console.error('Error al verificar token:', error.message);
-    return res.status(403).json({ message: 'Token inválido o expirado' });
+    return res.status(401).json({ message: 'Token inválido o expirado' });
   }
 };
 
