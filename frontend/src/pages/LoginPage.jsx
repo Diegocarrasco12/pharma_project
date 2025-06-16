@@ -46,9 +46,7 @@ const LoginPage = () => {
       try {
         const response = await fetch(`${API_URL}/api/auth/login`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
         });
 
@@ -65,15 +63,10 @@ const LoginPage = () => {
           setEmail('');
           setPassword('');
 
-          // 🔁 Delay para permitir que el toast se muestre antes de redirigir
+          // ⏳ Espera para mostrar el toast antes de redirigir
           setTimeout(() => {
-            if (data.user?.role === 'admin') {
-              navigate('/perfil-admin');
-            } else {
-              navigate('/perfil-usuario');
-            }
+            navigate(data.user?.role === 'admin' ? '/perfil-admin' : '/perfil-usuario');
           }, 500);
-
         } else {
           toast.error(data.message || 'Credenciales incorrectas');
         }
@@ -133,7 +126,6 @@ const LoginPage = () => {
             </p>
           </div>
         </div>
-
         <ScrollTopLogo />
       </div>
       <Footer />
