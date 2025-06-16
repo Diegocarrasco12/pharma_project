@@ -25,6 +25,7 @@ const AdminDashboard = () => {
     price: '',
     image_url: ''
   });
+  const [loading, setLoading] = useState(false);
   const token = localStorage.getItem('token');
 
   useEffect(() => {
@@ -76,6 +77,7 @@ const AdminDashboard = () => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     try {
       const response = await fetch(`${API_URL}/api/users/profile`, {
         method: 'PUT',
@@ -99,6 +101,7 @@ const AdminDashboard = () => {
     } catch {
       toast.error('Error en la conexión con el servidor');
     }
+    setLoading(false);
   };
 
   const handleRoleChange = async (id, role) => {
@@ -218,7 +221,9 @@ const AdminDashboard = () => {
             <input name="age" type="number" placeholder="Edad" value={form.age} onChange={handleChange} />
             <input name="email" type="email" placeholder="Correo electrónico" value={form.email} disabled />
             <input type="file" accept="image/*" onChange={handleFileChange} />
-            <button className={styles.saveButton} onClick={handleSubmit}>Guardar Cambios</button>
+            <button className={styles.saveButton} onClick={handleSubmit} disabled={loading}>
+              {loading ? 'Guardando...' : 'Guardar Cambios'}
+            </button>
           </div>
         </section>
 

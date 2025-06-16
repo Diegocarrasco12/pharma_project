@@ -22,8 +22,8 @@ const RegisterPage = () => {
 
   const validate = () => {
     const newErrors = {};
-    if (!name) newErrors.name = 'El nombre es obligatorio';
-    if (!email) {
+    if (!name.trim()) newErrors.name = 'El nombre es obligatorio';
+    if (!email.trim()) {
       newErrors.email = 'El correo es obligatorio';
     } else if (!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
       newErrors.email = 'El correo no es válido';
@@ -31,11 +31,10 @@ const RegisterPage = () => {
     if (!password) {
       newErrors.password = 'La contraseña es obligatoria';
     } else if (password.length < 6) {
-      newErrors.password = 'La contraseña debe tener al menos 6 caracteres';
+      newErrors.password = 'Debe tener al menos 6 caracteres';
     } else if (!/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
       newErrors.password = 'Debe contener una mayúscula y un número';
     }
-
     if (!confirmPassword) {
       newErrors.confirmPassword = 'Debes confirmar tu contraseña';
     } else if (password !== confirmPassword) {
@@ -45,24 +44,20 @@ const RegisterPage = () => {
   };
 
   useEffect(() => {
-    if (firstErrorRef.current) {
-      firstErrorRef.current.focus();
-    }
+    if (firstErrorRef.current) firstErrorRef.current.focus();
   }, [errors]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     const formErrors = validate();
     setErrors(formErrors);
 
     if (Object.keys(formErrors).length === 0) {
+      setLoading(true);
       try {
         const response = await fetch(`${API_URL}/api/auth/register`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name, email, password }),
         });
 
@@ -80,12 +75,15 @@ const RegisterPage = () => {
         }
       } catch (error) {
         toast.error('Error al conectar con el servidor');
+      } finally {
+        setLoading(false);
       }
     } else {
       toast.error('Por favor corrige los errores del formulario');
     }
-    setLoading(false);
   };
+
+  const inputClass = (field) => (errors[field] ? `${styles.inputError}` : '');
 
   return (
     <>
@@ -94,26 +92,35 @@ const RegisterPage = () => {
         <div className={styles.registerBox}>
           <h1>Crear cuenta</h1>
           <form className={styles.form} onSubmit={handleSubmit} noValidate>
+            {/* Nombre */}
             <label>Nombre completo</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Tu nombre"
+              className={inputClass('name')}
               ref={errors.name ? firstErrorRef : null}
+              aria-invalid={!!errors.name}
+              aria-describedby="error-name"
             />
-            {errors.name && <p className={styles.error}>{errors.name}</p>}
+            {errors.name && <p id="error-name" className={styles.error}>❌ {errors.name}</p>}
 
+            {/* Email */}
             <label>Correo electrónico</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="correo@ejemplo.com"
+              className={inputClass('email')}
               ref={errors.email && !errors.name ? firstErrorRef : null}
+              aria-invalid={!!errors.email}
+              aria-describedby="error-email"
             />
-            {errors.email && <p className={styles.error}>{errors.email}</p>}
+            {errors.email && <p id="error-email" className={styles.error}>❌ {errors.email}</p>}
 
+            {/* Contraseña */}
             <label>Contraseña</label>
             <div className={styles.passwordContainer}>
               <input
@@ -121,7 +128,10 @@ const RegisterPage = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="********"
+                className={inputClass('password')}
                 ref={errors.password && !errors.name && !errors.email ? firstErrorRef : null}
+                aria-invalid={!!errors.password}
+                aria-describedby="error-password"
               />
               <button
                 type="button"
@@ -131,8 +141,9 @@ const RegisterPage = () => {
                 {showPassword ? 'Ocultar' : 'Mostrar'}
               </button>
             </div>
-            {errors.password && <p className={styles.error}>{errors.password}</p>}
+            {errors.password && <p id="error-password" className={styles.error}>❌ {errors.password}</p>}
 
+            {/* Confirmar contraseña */}
             <label>Confirmar contraseña</label>
             <div className={styles.passwordContainer}>
               <input
@@ -140,6 +151,7 @@ const RegisterPage = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="********"
+                className={inputClass('confirmPassword')}
                 ref={
                   errors.confirmPassword &&
                   !errors.name &&
@@ -148,6 +160,8 @@ const RegisterPage = () => {
                     ? firstErrorRef
                     : null
                 }
+                aria-invalid={!!errors.confirmPassword}
+                aria-describedby="error-confirm"
               />
               <button
                 type="button"
@@ -158,7 +172,7 @@ const RegisterPage = () => {
               </button>
             </div>
             {errors.confirmPassword && (
-              <p className={styles.error}>{errors.confirmPassword}</p>
+              <p id="error-confirm" className={styles.error}>❌ {errors.confirmPassword}</p>
             )}
 
             <button type="submit" disabled={loading}>

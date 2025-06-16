@@ -65,11 +65,15 @@ const LoginPage = () => {
           setEmail('');
           setPassword('');
 
-          if (data.user?.role === 'admin') {
-            navigate('/admin/mensajes');
-          } else {
-            navigate('/perfil-usuario');
-          }
+          // 🔁 Delay para permitir que el toast se muestre antes de redirigir
+          setTimeout(() => {
+            if (data.user?.role === 'admin') {
+              navigate('/perfil-admin');
+            } else {
+              navigate('/perfil-usuario');
+            }
+          }, 500);
+
         } else {
           toast.error(data.message || 'Credenciales incorrectas');
         }

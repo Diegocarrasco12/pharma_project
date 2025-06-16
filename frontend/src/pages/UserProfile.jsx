@@ -3,6 +3,7 @@ import styles from './UserProfile.module.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ScrollTopLogo from '../components/ScrollTopLogo';
+import { toast } from 'react-toastify'; // ✅ AÑADIDO
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -32,7 +33,7 @@ const UserProfile = () => {
         setImagePreview(data.profile_image || '');
         localStorage.setItem('profileImage', data.profile_image || '');
       } catch (error) {
-        console.error('Error al cargar perfil:', error);
+        toast.error('Error al cargar el perfil');
       }
     };
 
@@ -69,14 +70,14 @@ const UserProfile = () => {
 
       const data = await res.json();
       if (res.ok) {
-        alert('Perfil actualizado correctamente');
+        toast.success('Perfil actualizado correctamente');
         localStorage.setItem('profileImage', data.profile_image || '');
-        setUser(data.user); // ✅ actualiza el estado
+        setUser(data.user);
       } else {
-        alert(data.message || 'Error al actualizar perfil');
+        toast.error(data.message || 'Error al actualizar perfil');
       }
     } catch (err) {
-      console.error('Error al actualizar perfil:', err);
+      toast.error('Error al conectar con el servidor');
     }
     setLoading(false);
   };
@@ -91,7 +92,7 @@ const UserProfile = () => {
 
         <div className={styles.imageContainer}>
           <img
-            src={imagePreview || '/uploads/default-user.jpeg'} // ✅ RUTA ACTUALIZADA
+            src={imagePreview || '/uploads/default-user.jpeg'}
             alt="Foto de perfil"
             className={styles.profileImage}
           />

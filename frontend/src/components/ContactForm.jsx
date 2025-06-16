@@ -2,18 +2,15 @@ import React, { useState } from 'react';
 import styles from './ContactForm.module.css';
 import { toast } from 'react-toastify';
 import WhatsAppIcon from './icons/WhatsAppIcon';
-import ScrollTopLogo from './ScrollTopLogo'; // ✅ Importado para logo flotante
+import ScrollTopLogo from './ScrollTopLogo';
 
 const API_URL = import.meta.env.VITE_API_URL;
 const whatsappNumber = '56983249135';
 
 const ContactForm = () => {
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
+  const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false); // ✅ NUEVO
 
   const validate = () => {
     const newErrors = {};
@@ -39,23 +36,26 @@ const ContactForm = () => {
     setErrors(formErrors);
 
     if (Object.keys(formErrors).length === 0) {
+      setLoading(true); // ✅ Activar loading
       try {
         const response = await fetch(`${API_URL}/api/contact`, {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(form)
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(form),
         });
+
+        const data = await response.json();
 
         if (response.ok) {
           toast.success('Mensaje enviado correctamente');
           setForm({ name: '', email: '', message: '' });
         } else {
-          toast.error('Error al enviar el mensaje. Inténtalo más tarde.');
+          toast.error(data.message || 'Error al enviar el mensaje');
         }
       } catch (error) {
         toast.error('Hubo un problema al conectar con el servidor');
+      } finally {
+        setLoading(false); // ✅ Desactivar loading
       }
     } else {
       toast.error('Por favor corrige los errores del formulario');
@@ -97,7 +97,9 @@ const ContactForm = () => {
         />
         {errors.message && <p className={styles.error}>{errors.message}</p>}
 
-        <button type="submit">Enviar mensaje</button>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Enviando...' : 'Enviar mensaje'}
+        </button>
       </form>
 
       <a
@@ -110,7 +112,6 @@ const ContactForm = () => {
         Hablar por WhatsApp
       </a>
 
-      {/* ✅ Logo flotante solo visible en móvil */}
       <ScrollTopLogo />
     </div>
   );
