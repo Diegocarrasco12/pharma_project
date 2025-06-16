@@ -128,19 +128,28 @@ const AdminDashboard = () => {
 
   const handleAddProduct = async () => {
     try {
+      const formData = new FormData();
+      formData.append('name', newProduct.name);
+      formData.append('description', newProduct.description);
+      formData.append('price', newProduct.price);
+      if (file) {
+        formData.append('image', file);
+      }
+
       const response = await fetch(`${API_URL}/api/products`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify(newProduct)
+        body: formData
       });
+
       const data = await response.json();
       if (response.ok) {
         toast.success('Producto agregado');
         setProducts(prev => [...prev, data]);
         setNewProduct({ name: '', description: '', price: '', image_url: '' });
+        setFile(null);
         setShowAddForm(false);
       } else {
         toast.error(data.error || 'Error al agregar producto');
@@ -245,12 +254,10 @@ const AdminDashboard = () => {
               <input type="text" placeholder="Descripción" value={newProduct.description} onChange={(e) => setNewProduct(prev => ({ ...prev, description: e.target.value }))} />
               <input type="number" placeholder="Precio" value={newProduct.price} onChange={(e) => setNewProduct(prev => ({ ...prev, price: e.target.value }))} />
               <input type="file" accept="image/*" onChange={(e) => {
-                const file = e.target.files[0];
-                const reader = new FileReader();
-                reader.onloadend = () => {
-                  setNewProduct(prev => ({ ...prev, image_url: reader.result }));
-                };
-                if (file) reader.readAsDataURL(file);
+                const selectedFile = e.target.files[0];
+                if (selectedFile) {
+                  setFile(selectedFile);
+                }
               }} />
               <button onClick={handleAddProduct}>Guardar Producto</button>
             </div>
@@ -269,6 +276,16 @@ const AdminDashboard = () => {
                     <input type="text" value={showEditForm.name} onChange={(e) => setShowEditForm(prev => ({ ...prev, name: e.target.value }))} />
                     <input type="text" value={showEditForm.description} onChange={(e) => setShowEditForm(prev => ({ ...prev, description: e.target.value }))} />
                     <input type="number" value={showEditForm.price} onChange={(e) => setShowEditForm(prev => ({ ...prev, price: e.target.value }))} />
+                    <input type="file" accept="image/*" onChange={(e) => {
+                      const file = e.target.files[0];
+                      if (file) {
+                        const reader = new FileReader();
+                        reader.onloadend = () => {
+                          setShowEditForm(prev => ({ ...prev, image_url: reader.result }));
+                        };
+                        reader.readAsDataURL(file);
+                      }
+                    }} />
                     <button onClick={() => handleEditProduct(product.id)}>Guardar Cambios</button>
                   </div>
                 )}
