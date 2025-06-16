@@ -18,6 +18,7 @@ const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [products, setProducts] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(null);
   const [newProduct, setNewProduct] = useState({
     name: '',
     description: '',
@@ -26,7 +27,6 @@ const AdminDashboard = () => {
   });
   const token = localStorage.getItem('token');
 
-  // Cargar perfil admin
   useEffect(() => {
     fetch(`${API_URL}/api/users/profile`, {
       headers: { Authorization: `Bearer ${token}` }
@@ -43,7 +43,6 @@ const AdminDashboard = () => {
       .catch(() => toast.error('Error al cargar perfil'));
   }, [token]);
 
-  // Cargar usuarios
   useEffect(() => {
     fetch(`${API_URL}/api/users`, {
       headers: { Authorization: `Bearer ${token}` }
@@ -53,7 +52,6 @@ const AdminDashboard = () => {
       .catch(() => toast.error('Error al cargar usuarios'));
   }, [token]);
 
-  // Cargar productos
   useEffect(() => {
     fetch(`${API_URL}/api/products`)
       .then(res => res.json())
@@ -152,6 +150,50 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleDeleteProduct = async (id) => {
+    try {
+      const response = await fetch(`${API_URL}/api/products/${id}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (response.ok) {
+        toast.success('Producto eliminado');
+        setProducts(prev => prev.filter(product => product.id !== id));
+      } else {
+        toast.error('Error al eliminar producto');
+      }
+    } catch {
+      toast.error('Error en la conexión con el servidor');
+    }
+  };
+
+  const handleEditProduct = async (id) => {
+    try {
+      const response = await fetch(`${API_URL}/api/products/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify(showEditForm)
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        toast.success('Producto actualizado');
+        setProducts(prev => prev.map(p => (p.id === id ? data : p)));
+        setShowEditForm(null);
+      } else {
+        toast.error(data.message || 'Error al actualizar producto');
+      }
+    } catch {
+      toast.error('Error al conectar con el servidor');
+    }
+  };
+
   return (
     <>
       <Header />
@@ -195,42 +237,21 @@ const AdminDashboard = () => {
             <button onClick={() => setShowAddForm(!showAddForm)}>
               {showAddForm ? 'Cerrar Formulario' : 'Agregar Producto'}
             </button>
-            <button onClick={() => toast.info('Función Editar próximamente')}>Editar Producto</button>
-            <button onClick={() => toast.info('Función Eliminar próximamente')}>Eliminar Producto</button>
           </div>
 
           {showAddForm && (
             <div className={styles.addProductForm}>
-              <input
-                type="text"
-                placeholder="Nombre del producto"
-                value={newProduct.name}
-                onChange={(e) => setNewProduct(prev => ({ ...prev, name: e.target.value }))}
-              />
-              <input
-                type="text"
-                placeholder="Descripción"
-                value={newProduct.description}
-                onChange={(e) => setNewProduct(prev => ({ ...prev, description: e.target.value }))}
-              />
-              <input
-                type="number"
-                placeholder="Precio"
-                value={newProduct.price}
-                onChange={(e) => setNewProduct(prev => ({ ...prev, price: e.target.value }))}
-              />
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => {
-                  const file = e.target.files[0];
-                  const reader = new FileReader();
-                  reader.onloadend = () => {
-                    setNewProduct(prev => ({ ...prev, image_url: reader.result }));
-                  };
-                  if (file) reader.readAsDataURL(file);
-                }}
-              />
+              <input type="text" placeholder="Nombre del producto" value={newProduct.name} onChange={(e) => setNewProduct(prev => ({ ...prev, name: e.target.value }))} />
+              <input type="text" placeholder="Descripción" value={newProduct.description} onChange={(e) => setNewProduct(prev => ({ ...prev, description: e.target.value }))} />
+              <input type="number" placeholder="Precio" value={newProduct.price} onChange={(e) => setNewProduct(prev => ({ ...prev, price: e.target.value }))} />
+              <input type="file" accept="image/*" onChange={(e) => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                  setNewProduct(prev => ({ ...prev, image_url: reader.result }));
+                };
+                if (file) reader.readAsDataURL(file);
+              }} />
               <button onClick={handleAddProduct}>Guardar Producto</button>
             </div>
           )}
@@ -238,7 +259,19 @@ const AdminDashboard = () => {
           <div className={styles.productList}>
             {products.map(product => (
               <div key={product.id} className={styles.productCard}>
-                {product.name} - ${product.price.toLocaleString('es-CL')}
+                <strong>{product.name}</strong> - ${product.price.toLocaleString('es-CL')}
+                <div>
+                  <button onClick={() => setShowEditForm(product)}>Editar</button>
+                  <button onClick={() => handleDeleteProduct(product.id)}>Eliminar</button>
+                </div>
+                {showEditForm?.id === product.id && (
+                  <div className={styles.addProductForm}>
+                    <input type="text" value={showEditForm.name} onChange={(e) => setShowEditForm(prev => ({ ...prev, name: e.target.value }))} />
+                    <input type="text" value={showEditForm.description} onChange={(e) => setShowEditForm(prev => ({ ...prev, description: e.target.value }))} />
+                    <input type="number" value={showEditForm.price} onChange={(e) => setShowEditForm(prev => ({ ...prev, price: e.target.value }))} />
+                    <button onClick={() => handleEditProduct(product.id)}>Guardar Cambios</button>
+                  </div>
+                )}
               </div>
             ))}
           </div>
