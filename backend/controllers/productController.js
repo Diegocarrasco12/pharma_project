@@ -104,14 +104,12 @@ export const updateProductImage = async (req, res) => {
   try {
     const imagePath = `/uploads/${image.filename}`;
 
-    // ✅ Usamos el nombre correcto de la columna según tu DB: image_url
     const result = await pool.query(
       'UPDATE products SET image_url = $1 WHERE id = $2 RETURNING *',
       [imagePath, id]
     );
 
     if (result.rowCount === 0) {
-      // Si el producto no existe, eliminamos la imagen subida
       fs.unlinkSync(image.path);
       return res.status(404).json({ message: 'Producto no encontrado' });
     }
