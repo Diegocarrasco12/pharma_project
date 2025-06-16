@@ -57,18 +57,20 @@ const LoginPage = () => {
         if (response.ok) {
           toast.success('Inicio de sesión exitoso');
           localStorage.setItem('token', data.token);
-          if (data.role) {
-            localStorage.setItem('role', data.role);
-          }
+           if (data.user?.role) {
+           localStorage.setItem('role', data.user.role); 
+           }
 
-          setEmail('');
-          setPassword('');
+           setEmail('');
+           setPassword('');
 
-          if (data.role === 'admin') {
-            navigate('/admin/mensajes');
-          } else {
-            navigate('/perfil-usuario');
-          }
+        if (data.user?.role === 'admin') {
+          navigate('/admin/mensajes');
+        } else {
+         navigate('/perfil-usuario');
+        }
+      }
+
         } else {
           toast.error(data.message || 'Credenciales incorrectas');
         }
