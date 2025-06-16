@@ -19,7 +19,7 @@ router.get('/', getAllProducts);
 router.get('/:id', getProductById);
 
 // Rutas protegidas (solo admin)
-router.post('/', verifyToken, isAdmin, createProduct);
+router.post('/', verifyToken, isAdmin, upload.single('image'), createProduct); // ✅ Corregido
 router.put('/:id', verifyToken, isAdmin, updateProduct);
 router.delete('/:id', verifyToken, isAdmin, deleteProduct);
 router.post('/:id/image', verifyToken, isAdmin, upload.single('image'), updateProductImage);

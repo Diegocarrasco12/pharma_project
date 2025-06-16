@@ -1,6 +1,7 @@
 import pool from '../config/db.js';
 import fs from 'fs';
 
+// Obtener todos los productos
 export const getAllProducts = async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM products');
@@ -11,6 +12,7 @@ export const getAllProducts = async (req, res) => {
   }
 };
 
+// Obtener producto por ID
 export const getProductById = async (req, res) => {
   const { id } = req.params;
 
@@ -28,17 +30,21 @@ export const getProductById = async (req, res) => {
   }
 };
 
+// Crear nuevo producto con imagen
 export const createProduct = async (req, res) => {
-  const { name, price, image_url, description } = req.body;
+  const { name, price, description } = req.body;
+  const image = req.file;
 
-  if (!name || !price) {
-    return res.status(400).json({ error: 'Nombre y precio son obligatorios' });
+  if (!name || !price || !image) {
+    return res.status(400).json({ error: 'Faltan campos obligatorios' });
   }
 
   try {
+    const imagePath = `/uploads/${image.filename}`;
+
     const result = await pool.query(
       'INSERT INTO products (name, price, image_url, description) VALUES ($1, $2, $3, $4) RETURNING *',
-      [name, price, image_url, description]
+      [name, price, imagePath, description]
     );
 
     res.status(201).json(result.rows[0]);
@@ -48,6 +54,7 @@ export const createProduct = async (req, res) => {
   }
 };
 
+// Actualizar producto
 export const updateProduct = async (req, res) => {
   const { id } = req.params;
   const { name, price, image_url, description } = req.body;
@@ -76,6 +83,7 @@ export const updateProduct = async (req, res) => {
   }
 };
 
+// Eliminar producto
 export const deleteProduct = async (req, res) => {
   const { id } = req.params;
 
@@ -93,6 +101,7 @@ export const deleteProduct = async (req, res) => {
   }
 };
 
+// Actualizar solo la imagen de un producto
 export const updateProductImage = async (req, res) => {
   const { id } = req.params;
   const image = req.file;
@@ -110,7 +119,7 @@ export const updateProductImage = async (req, res) => {
     );
 
     if (result.rowCount === 0) {
-      fs.unlinkSync(image.path);
+      fs.unlinkSync(image.path); // Eliminar imagen si no se encontró producto
       return res.status(404).json({ message: 'Producto no encontrado' });
     }
 
