@@ -77,19 +77,31 @@ export const getUserProfile = async (req, res) => {
   }
 };
 
-// ✅ Nueva función: actualizar nombre, edad y/o imagen
+// Actualizar nombre, edad y/o imagen (versión segura)
 export const updateUserProfile = async (req, res) => {
-  const userId = req.user.id;
-  const { name, age, profile_image } = req.body;
-
   try {
+    const userId = req.user.id;
+    const { name, age, profile_image } = req.body;
+
+    if (!userId || !name) {
+      return res.status(400).json({ message: 'Faltan datos requeridos' });
+    }
+
     const result = await pool.query(
       'UPDATE users SET name = $1, age = $2, profile_image = $3 WHERE id = $4 RETURNING id, name, email, role, profile_image, age',
-      [name, age, profile_image, userId]
+      [name, age || null, profile_image || null, userId]
     );
-    res.status(200).json({ message: 'Perfil actualizado', user: result.rows[0] });
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+
+    res.status(200).json({
+      message: 'Perfil actualizado',
+      user: result.rows[0],
+    });
   } catch (error) {
-    console.error('Error al actualizar perfil:', error);
-    res.status(500).json({ message: 'Error al actualizar perfil' });
+    console.error('Error al actualizar perfil:', error.message);
+    res.status(500).json({ message: 'Error interno del servidor' });
   }
 };
