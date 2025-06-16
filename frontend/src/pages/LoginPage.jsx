@@ -58,13 +58,13 @@ const LoginPage = () => {
             localStorage.setItem('role', data.user.role);
           }
 
-          // ✅ Guardamos el toast para que se muestre en la próxima pantalla
+          // ✅ Guardamos el mensaje para mostrarlo después del redirect
           localStorage.setItem('toastMessage', 'Inicio de sesión exitoso');
 
           setEmail('');
           setPassword('');
 
-          // ✅ Redireccionamos inmediatamente sin toast aquí
+          // ✅ Redirigimos sin mostrar toast aquí
           navigate(data.user?.role === 'admin' ? '/perfil-admin' : '/perfil-usuario');
         } else {
           toast.error(data.message || 'Credenciales incorrectas');

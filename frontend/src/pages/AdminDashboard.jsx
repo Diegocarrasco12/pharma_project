@@ -28,29 +28,32 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem('token');
 
-  // ✅ Mostrar toast si existe uno almacenado
+  // ✅ Cargar datos y mostrar toast si viene de otra acción
   useEffect(() => {
-    const message = localStorage.getItem('toastMessage');
-    if (message) {
-      toast.success(message);
-      localStorage.removeItem('toastMessage');
-    }
-  }, []);
-
-  useEffect(() => {
-    fetch(`${API_URL}/api/users/profile`, {
-      headers: { Authorization: `Bearer ${token}` }
-    })
-      .then(res => res.json())
-      .then(data => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch(`${API_URL}/api/users/profile`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const data = await res.json();
         setForm({
           name: data.name || '',
           age: data.age || '',
           email: data.email || '',
           profileImage: data.profile_image || ''
         });
-      })
-      .catch(() => toast.error('Error al cargar perfil'));
+
+        const toastMsg = localStorage.getItem('toastMessage');
+        if (toastMsg) {
+          toast.success(toastMsg);
+          localStorage.removeItem('toastMessage');
+        }
+      } catch {
+        toast.error('Error al cargar perfil');
+      }
+    };
+
+    fetchData();
   }, [token]);
 
   useEffect(() => {

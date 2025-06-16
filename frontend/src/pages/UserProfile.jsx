@@ -17,15 +17,6 @@ const UserProfile = () => {
 
   const token = localStorage.getItem('token');
 
-  // ✅ Mostrar toast si viene de otra página
-  useEffect(() => {
-    const message = localStorage.getItem('toastMessage');
-    if (message) {
-      toast.success(message);
-      localStorage.removeItem('toastMessage');
-    }
-  }, []);
-
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -41,13 +32,21 @@ const UserProfile = () => {
         setAge(data.age || '');
         setImagePreview(data.profile_image || '');
         localStorage.setItem('profileImage', data.profile_image || '');
+
+        // ✅ Mostrar toast si viene de otra acción
+        const toastMsg = localStorage.getItem('toastMessage');
+        if (toastMsg) {
+          toast.success(toastMsg);
+          localStorage.removeItem('toastMessage');
+        }
+
       } catch (error) {
         toast.error('Error al cargar el perfil');
       }
     };
 
     fetchProfile();
-  }, []);
+  }, [token]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
