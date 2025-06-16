@@ -31,6 +31,7 @@
   padding-bottom: 0.5rem;
 }
 
+/* PERFIL */
 .profileForm {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -66,7 +67,7 @@
   background-color: #143a66;
 }
 
-/* Usuarios Registrados */
+/* USUARIOS REGISTRADOS */
 
 .userList {
   display: flex;
@@ -82,9 +83,14 @@
   border-left: 4px solid #0b2b4b;
   font-size: 0.95rem;
   color: #333;
+  word-break: break-word; /* ✅ evita desbordes con correos largos */
+  overflow-wrap: anywhere; /* ✅ adicional para romper correos */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-/* Productos */
+/* PRODUCTOS */
 
 .productActions {
   display: flex;
@@ -108,6 +114,30 @@
   background-color: #143a66;
 }
 
+.addProductForm {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.addProductForm input {
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.addProductForm button {
+  padding: 0.6rem;
+  background-color: #0b2b4b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
 .productList {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -126,4 +156,41 @@
 
 .productCard:hover {
   transform: translateY(-4px);
+}
+
+.productCard button {
+  margin: 0.3rem;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #0b2b4b;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.productCard button:hover {
+  background-color: #143a66;
+}
+
+/* RESPONSIVE FIXES */
+
+@media (max-width: 480px) {
+  .saveButton {
+    grid-column: span 1;
+  }
+
+  .userCard {
+    font-size: 0.9rem;
+    padding: 0.75rem;
+  }
+
+  .addProductForm input,
+  .addProductForm button {
+    font-size: 0.9rem;
+  }
+
+  .productCard {
+    font-size: 0.9rem;
+  }
 }
