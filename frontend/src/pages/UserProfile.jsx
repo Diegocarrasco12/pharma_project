@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import styles from './UserProfile.module.css';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import ScrollTopLogo from '../components/ScrollTopLogo';
 import { toast } from 'react-toastify';
 
@@ -21,8 +19,8 @@ const UserProfile = () => {
   useEffect(() => {
     const toastMsg = localStorage.getItem('toastMessage');
     if (toastMsg) {
-      localStorage.removeItem('toastMessage'); // ✅ primero lo borramos
-      toast.success(toastMsg);                 // ✅ luego lo mostramos
+      localStorage.removeItem('toastMessage');
+      toast.success(toastMsg);
     }
   }, []);
 
@@ -95,7 +93,6 @@ const UserProfile = () => {
 
   return (
     <>
-      <Header />
       <div className={styles.profileContainer}>
         <h2>Mi Perfil</h2>
 
@@ -140,7 +137,7 @@ const UserProfile = () => {
           {loading ? 'Guardando...' : 'Guardar cambios'}
         </button>
       </div>
-      <Footer />
+
       <ScrollTopLogo />
     </>
   );

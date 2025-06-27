@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import ScrollTopLogo from '../components/ScrollTopLogo';
 import styles from './AdminDashboard.module.css';
 import { toast } from 'react-toastify';
@@ -28,7 +26,6 @@ const AdminDashboard = () => {
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem('token');
 
-  // ✅ Mostrar mensaje de toast una sola vez si existe
   useEffect(() => {
     const msg = localStorage.getItem('toastMessage');
     if (msg) {
@@ -222,7 +219,6 @@ const AdminDashboard = () => {
 
   return (
     <>
-      <Header />
       <div className={styles.adminContainer}>
         <header className={styles.header}>
           <h1>Panel de Administrador</h1>
@@ -317,7 +313,6 @@ const AdminDashboard = () => {
         </section>
       </div>
       <ScrollTopLogo />
-      <Footer />
     </>
   );
 };

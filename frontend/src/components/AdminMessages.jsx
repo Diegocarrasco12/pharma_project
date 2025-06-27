@@ -32,33 +32,37 @@ const AdminMessages = () => {
     fetchMessages();
   }, []);
 
-  if (loading) return <p>Cargando mensajes...</p>;
-  if (error) return <p style={{ color: 'red' }}>⚠️ {error}</p>;
-  if (messages.length === 0) return <p>No hay mensajes registrados.</p>;
+  if (loading) return <p style={{ padding: '2rem' }}>Cargando mensajes...</p>;
+  if (error) return <p style={{ padding: '2rem', color: 'red' }}>⚠️ {error}</p>;
+  if (messages.length === 0) return <p style={{ padding: '2rem' }}>No hay mensajes registrados.</p>;
 
   return (
     <div style={{ padding: '2rem' }}>
       <h2>📨 Mensajes de Contacto</h2>
-      <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '1rem' }}>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Correo</th>
-            <th>Mensaje</th>
-            <th>Fecha</th>
-          </tr>
-        </thead>
-        <tbody>
-          {messages.map((msg) => (
-            <tr key={msg.id} style={{ borderTop: '1px solid #ccc' }}>
-              <td>{msg.name}</td>
-              <td>{msg.email}</td>
-              <td>{msg.message}</td>
-              <td>{new Date(msg.created_at).toLocaleString('es-CL')}</td>
+      <div style={{ overflowX: 'auto', marginTop: '1rem' }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead style={{ backgroundColor: '#f0f0f0' }}>
+            <tr>
+              <th style={{ padding: '0.5rem', border: '1px solid #ccc' }}>Nombre</th>
+              <th style={{ padding: '0.5rem', border: '1px solid #ccc' }}>Correo</th>
+              <th style={{ padding: '0.5rem', border: '1px solid #ccc' }}>Mensaje</th>
+              <th style={{ padding: '0.5rem', border: '1px solid #ccc' }}>Fecha</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {messages.map((msg) => (
+              <tr key={msg.id}>
+                <td style={{ padding: '0.5rem', border: '1px solid #ccc' }}>{msg.name}</td>
+                <td style={{ padding: '0.5rem', border: '1px solid #ccc' }}>{msg.email}</td>
+                <td style={{ padding: '0.5rem', border: '1px solid #ccc' }}>{msg.message}</td>
+                <td style={{ padding: '0.5rem', border: '1px solid #ccc' }}>
+                  {new Date(msg.created_at).toLocaleString('es-CL')}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
