@@ -1,20 +1,14 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import products from "./products";
-
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
 import Cart from "../../components/Cart";
-import ScrollTopLogo from "../../components/ScrollTopLogo";
-
 import { useCart } from "../../context/CartContext";
-
 import styles from "./ProductDetail.module.css";
 
 function ProductDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const product = products.find((p) => p.id === parseInt(id));
-
   const { addToCart, toggleCart } = useCart();
 
   useEffect(() => {
@@ -23,35 +17,27 @@ function ProductDetail() {
 
   if (!product) {
     return (
-      <>
-        <Header />
-        <div className={styles.container}>
-          <h2 style={{ color: "red", textAlign: "center" }}>
-            Producto no encontrado
-          </h2>
-          <a href="/" className={styles.buttonSmall}>
-            Volver al inicio
-          </a>
-        </div>
-        <Footer />
-      </>
+      <div className={styles.container}>
+        <h2 style={{ color: "red", textAlign: "center" }}>Producto no encontrado</h2>
+        <button className={styles.buttonSmall} onClick={() => navigate('/')}>
+          Volver al inicio
+        </button>
+      </div>
     );
   }
 
   const handleAddToCart = () => {
-    // Convertimos el campo "precio" a "price" para evitar errores
     const productForCart = {
       ...product,
-      price: product.precio
+      price: product.precio, // Normaliza campo para el carrito
     };
 
     addToCart(productForCart);
-    toggleCart(); // Abre el carrito
+    toggleCart();
   };
 
   return (
     <>
-      <Header />
       <div className={styles.container}>
         <div className={styles.card}>
           <div className={styles.imageContainer}>
@@ -69,15 +55,9 @@ function ProductDetail() {
             <p className={styles.stock}>
               <strong>{product.stock}</strong> disponibles
             </p>
-            <p>
-              <strong>SKU:</strong> {product.sku}
-            </p>
-            <p>
-              <strong>Categoría:</strong> {product.categoria}
-            </p>
-            <p>
-              <strong>Laboratorio:</strong> {product.laboratorio}
-            </p>
+            <p><strong>SKU:</strong> {product.sku}</p>
+            <p><strong>Categoría:</strong> {product.categoria}</p>
+            <p><strong>Laboratorio:</strong> {product.laboratorio}</p>
 
             {product.principio_activo && (
               <div className={styles.section}>
@@ -97,19 +77,13 @@ function ProductDetail() {
             </div>
 
             <p>
-              <strong>Precio por unidad fraccionada:</strong>{" "}
-              {product.precio_fraccionado}
+              <strong>Precio por unidad fraccionada:</strong> {product.precio_fraccionado}
             </p>
 
-            {/* ✅ Botones perfectamente alineados y funcionales */}
             <div className={styles.buttonGroup}>
-              <button
-                onClick={() => (window.location.href = "/")}
-                className={styles.button}
-              >
+              <button onClick={() => navigate('/')} className={styles.button}>
                 Volver al inicio
               </button>
-
               <button onClick={handleAddToCart} className={styles.buttonAdd}>
                 Agregar al carrito
               </button>
@@ -119,8 +93,6 @@ function ProductDetail() {
       </div>
 
       <Cart />
-      <Footer />
-      <ScrollTopLogo />
     </>
   );
 }
