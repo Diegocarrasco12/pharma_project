@@ -68,7 +68,6 @@
 }
 
 .button {
-  margin-top: 30px;
   padding: 12px 24px;
   background-color: #1976d2;
   color: white;
@@ -79,10 +78,38 @@
   text-decoration: none;
   text-align: center;
   display: inline-block;
+  transition: background-color 0.2s ease;
 }
 
 .button:hover {
   background-color: #125ea2;
+}
+
+/* ✅ Botón "Agregar al carrito" */
+.buttonAdd {
+  background-color: #28a745;
+}
+
+.buttonAdd:hover {
+  background-color: #218838;
+}
+
+/* ✅ Botón "Volver al inicio" (usando mismo estilo base con clase extra opcional si se desea) */
+.buttonSmall {
+  background-color: #1976d2;
+}
+
+.buttonSmall:hover {
+  background-color: #125ea2;
+}
+
+/* ✅ Grupo de botones alineado con el contenido */
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: flex-start; /* 🔹 clave para alinear con el contenido */
+  flex-wrap: wrap;
 }
 
 /* ✅ Mobile */
@@ -113,5 +140,9 @@
   .sectionTitle,
   .sectionText {
     text-align: center;
+  }
+
+  .buttonGroup {
+    justify-content: center; /* ✅ centrado solo en móvil */
   }
 }

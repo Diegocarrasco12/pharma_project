@@ -1,59 +1,89 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Header from './components/Header';
+import Footer from './components/Footer';
+import Cart from './components/Cart';
+import ScrollTopLogo from './components/ScrollTopLogo';
+import ProtectedRoute from './components/ProtectedRoute';
+import AdminMessages from './components/AdminMessages';
+
+import Categoria from './pages/Categoria';
+import ProductDetail from './pages/ProductDetail/ProductDetail';
+import PrescriptionPage from './pages/PrescriptionPage';
+import UserProfile from './pages/UserProfile';
+import AdminDashboard from './pages/AdminDashboard';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import ContactPage from './pages/ContactPage';
+import NotFound from './pages/NotFound';
+
+// ✅ Tu Home directamente como componente funcional aquí mismo
 import HeroCarousel from './components/HeroCarousel';
 import Services from './components/Services';
 import PrescriptionInfo from './components/PrescriptionInfo';
 import ProductCard from './components/ProductCard';
-import Footer from './components/Footer';
-import Cart from './components/Cart';
-import ScrollTopLogo from './components/ScrollTopLogo';
-
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
+import products from './pages/ProductDetail/products';
 import styles from './styles/Home.module.css';
-import './styles/global.css';
 
 const Home = () => (
   <>
-    <Header />
     <HeroCarousel />
     <Services />
-
     <main className={styles.productGrid}>
-      <Link to="/producto/1">
-        <ProductCard id={1} name="Vitamina C 1000mg" price="$5.990" image="/images/producto-vitamina-c.jpg" />
-      </Link>
-      <Link to="/producto/2">
-        <ProductCard id={2} name="Mascarilla KN95" price="$1.500" image="/images/producto-mascarilla-kn95.jpg" />
-      </Link>
-      <Link to="/producto/3">
-        <ProductCard id={3} name="Gel Analgésico" price="$6.990" image="/images/producto-gel-analgesico.jpg" />
-      </Link>
-      <Link to="/producto/4">
-        <ProductCard id={4} name="Termómetro Digital" price="$4.200" image="/images/producto-termometro-digital.jpg" />
-      </Link>
-      <Link to="/producto/5">
-        <ProductCard id={5} name="Vitamina D3" price="$7.990" image="/images/producto-vitamina-d3.jpg" />
-      </Link>
-      <Link to="/producto/6">
-        <ProductCard id={6} name="Alcohol Gel 70%" price="$2.500" image="/images/producto-alcohol-gel.jpg" />
-      </Link>
+      {products.map((producto) => (
+        <ProductCard
+          key={producto.id}
+          id={producto.id}
+          name={producto.nombre}
+          price={producto.precio}
+          image={producto.imagen}
+          categoria={producto.categoria}
+        />
+      ))}
     </main>
-
     <PrescriptionInfo />
-    <Cart />
-    <Footer />
-    <ScrollTopLogo />
   </>
 );
 
 function App() {
   return (
     <>
-      <Home />
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/categoria/:nombre" element={<Categoria />} />
+        <Route path="/producto/:id" element={<ProductDetail />} />
+        <Route path="/como-comprar-con-receta" element={<PrescriptionPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/registro" element={<RegisterPage />} />
+        <Route path="/contacto" element={<ContactPage />} />
+        
+        <Route path="/perfil-usuario" element={
+          <ProtectedRoute>
+            <UserProfile />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/perfil-admin" element={
+          <ProtectedRoute requireAdmin={true}>
+            <AdminDashboard />
+          </ProtectedRoute>
+        } />
+
+        <Route path="/admin/mensajes" element={
+          <ProtectedRoute requireAdmin={true}>
+            <AdminMessages />
+          </ProtectedRoute>
+        } />
+
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+      <Cart />
+      <Footer />
+      <ScrollTopLogo />
       <ToastContainer position="top-right" autoClose={3000} />
     </>
   );

@@ -1,56 +1,16 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 import App from './App.jsx';
-import PrescriptionPage from './pages/PrescriptionPage.jsx';
-import UserProfile from './pages/UserProfile.jsx';
-import AdminDashboard from './pages/AdminDashboard.jsx';
-import LoginPage from './pages/LoginPage.jsx';
-import RegisterPage from './pages/RegisterPage.jsx';
-import ContactPage from './pages/ContactPage.jsx';
-import NotFound from './pages/NotFound.jsx';
-import ProductDetail from './pages/ProductDetail/ProductDetail.jsx';
-import AdminMessages from './components/AdminMessages.jsx'; // ✅ NUEVA
-
 import { CartProvider } from './context/CartContext';
-import ProtectedRoute from './components/ProtectedRoute.jsx'; // ✅ NUEVO
-
 import './styles/global.css';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <CartProvider>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/producto/:id" element={<ProductDetail />} />
-          <Route path="/como-comprar-con-receta" element={<PrescriptionPage />} />
-
-          {/* ✅ Rutas protegidas */}
-          <Route path="/perfil-usuario" element={
-            <ProtectedRoute>
-              <UserProfile />
-            </ProtectedRoute>
-          } />
-
-          <Route path="/perfil-admin" element={
-            <ProtectedRoute requireAdmin={true}>
-              <AdminDashboard />
-            </ProtectedRoute>
-          } />
-
-          <Route path="/admin/mensajes" element={
-            <ProtectedRoute requireAdmin={true}>
-              <AdminMessages />
-            </ProtectedRoute>
-          } />
-
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/registro" element={<RegisterPage />} />
-          <Route path="/contacto" element={<ContactPage />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <App />
       </BrowserRouter>
     </CartProvider>
   </StrictMode>

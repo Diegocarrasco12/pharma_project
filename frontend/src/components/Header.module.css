@@ -16,7 +16,9 @@
   flex-wrap: wrap;
 }
 
-.left, .center, .right {
+.left,
+.center,
+.right {
   display: flex;
   align-items: center;
 }
@@ -30,8 +32,13 @@
   justify-content: center;
 }
 
+/* ✅ Mejor organización de íconos derechos */
 .right {
-  gap: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
 }
 
 /* === LOGO === */
@@ -39,9 +46,43 @@
   display: flex;
   align-items: center;
 }
-.logo {
-  width: 120px;
+
+.logoImg {
+  width: 200px;
   height: auto;
+}
+
+.logo {
+  width: 150px;
+  height: auto;
+}
+
+/* === ICONOS SUPERIORES === */
+.iconButton,
+.cartButton,
+.menuToggle {
+  font-size: 1.6rem;
+  color: #0077cc;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem;
+  transition: opacity 0.2s ease;
+}
+
+.iconButton:hover,
+.cartButton:hover,
+.menuToggle:hover {
+  opacity: 0.8;
+}
+
+.cartCount {
+  font-size: 0.8rem;
+  margin-left: 0.2rem;
+  font-weight: bold;
 }
 
 /* === BUSCADOR === */
@@ -49,6 +90,7 @@
   width: 100%;
   max-width: 450px;
 }
+
 .searchContainer input {
   width: 100%;
   padding: 0.5rem 1rem;
@@ -57,44 +99,89 @@
   font-size: 0.95rem;
 }
 
-/* === CARRITO === */
-.cartButton {
-  background-color: #0077cc;
-  color: white;
-  border: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-}
-.cartCount {
-  margin-left: 6px;
-}
-
-/* === HAMBURGUESA === */
-.menuToggle {
-  display: none;
-  font-size: 1.8rem;
-  background: none;
-  border: none;
-  color: #0077cc;
-  cursor: pointer;
-}
-
-/* === NAV MENU === */
+/* === NAV MENU (CATEGORÍAS) === */
 .navMenu {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 2rem;
-  padding: 0.8rem 0;
+  padding: 0.8rem 2rem;
   flex-wrap: wrap;
 }
+
 .navMenu a {
   text-decoration: none;
   color: #333;
   font-weight: 500;
+}
+
+/* === BOTONES USUARIO / ENLACES SUPERIORES === */
+.topLink {
+  font-weight: 500;
+  color: #0077cc;
+  text-decoration: none;
+}
+
+.topLink:hover {
+  text-decoration: underline;
+}
+
+.logoutButton {
+  font-weight: 500;
+  color: #0077cc;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.buttonAsIcon {
+  all: unset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  color: #0077cc;
+  cursor: pointer;
+  padding: 0.2rem;
+  line-height: 1; /* ⚠️ clave para que no se baje */
+  vertical-align: middle;
+  transition: opacity 0.2s ease;
+}
+
+.buttonAsIcon:hover {
+  opacity: 0.8;
+}
+
+.buttonAsIcon:hover {
+  opacity: 0.8;
+}
+
+
+.logoutButton:hover {
+  text-decoration: underline;
+}
+
+/* ✅ PERFIL: Imagen circular bien alineada */
+.profileImage {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #0077cc;
+  cursor: pointer;
+}
+
+/* ✅ Etiqueta para subir imagen si aún no hay */
+.uploadLabel {
+  width: 36px;
+  height: 36px;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e3f2fd;
+  border-radius: 50%;
+  border: 2px dashed #0077cc;
+  cursor: pointer;
 }
 
 /* === RESPONSIVE === */
@@ -107,13 +194,18 @@
     width: 100px;
   }
 
+  .logoImg {
+    width: 130px;
+  }
+
   .cartButton {
-    padding: 0.3rem 0.6rem;
-    font-size: 0.9rem;
+    font-size: 1.5rem;
+    padding: 0.3rem;
   }
 
   .menuToggle {
     display: block;
+    font-size: 1.5rem;
   }
 
   .navMenu {
@@ -149,16 +241,38 @@
   z-index: 999;
   display: none;
 }
+
 .logoMobileFloating img {
   width: 100%;
   height: auto;
   object-fit: contain;
 }
-.profileImage {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #0077cc;
+@media (max-width: 768px) {
+  .right {
+    display: none;
+  }
+
+  .showRightMobile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-top: 1rem;
+  }
+}
+.navMenuIcons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.mobileTextButton {
+  background: none;
+  border: none;
+  color: #0077cc;
+  font-size: 1rem;
+  text-align: left;
+  padding: 0;
   cursor: pointer;
 }
+

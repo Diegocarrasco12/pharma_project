@@ -37,13 +37,42 @@ export const CartProvider = ({ children }) => {
     setIsCartOpen(!isCartOpen);
   };
 
+  const openCart = () => setIsCartOpen(true);
+  const closeCart = () => setIsCartOpen(false);
+
+  // ✅ Aumentar cantidad
+  const increaseQuantity = (productName) => {
+    setCartItems(prevItems =>
+      prevItems.map(item =>
+        item.name === productName
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      )
+    );
+  };
+
+  // ✅ Disminuir cantidad (pero no menos de 1)
+  const decreaseQuantity = (productName) => {
+    setCartItems(prevItems =>
+      prevItems.map(item =>
+        item.name === productName && item.quantity > 1
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
+      )
+    );
+  };
+
   const value = {
     cartItems,
     addToCart,
     removeFromCart,
-    clearCart,       // 🆕 función disponible en toda la app
+    clearCart,
     isCartOpen,
-    toggleCart
+    toggleCart,
+    openCart,
+    closeCart,
+    increaseQuantity,  // 🟢 NUEVO
+    decreaseQuantity   // 🟢 NUEVO
   };
 
   return (

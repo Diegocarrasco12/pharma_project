@@ -36,14 +36,34 @@
   font-size: 0.95rem;
 }
 
-.logo img {
-  width: 120px;
-  margin-bottom: 1rem;
+/* Logo principal + cenabast contenedor */
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
+.logo img {
+  width: 120px;
+  margin-bottom: 0.5rem;
+}
+
+/* Logo de pago */
 .paymentLogo {
   width: 100px;
   margin-top: 1rem;
+}
+
+/* Logo CENABAST */
+.cenabastLogo {
+  width: 100px;
+  margin-top: 1rem;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.cenabastLogo:hover {
+  transform: scale(1.05);
 }
 
 .copy {
@@ -53,6 +73,7 @@
   color: #cccccc;
 }
 
+/* Responsive */
 @media (max-width: 768px) {
   .columns {
     flex-direction: column;
@@ -60,11 +81,19 @@
     text-align: center;
   }
 
+  .logo {
+    align-items: center;
+  }
+
   .logo img {
     width: 100px;
   }
 
   .paymentLogo {
+    width: 80px;
+  }
+
+  .cenabastLogo {
     width: 80px;
   }
 }

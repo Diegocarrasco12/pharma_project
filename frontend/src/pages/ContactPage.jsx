@@ -1,14 +1,14 @@
 // src/pages/ContactPage.jsx
 import React from 'react';
 import ContactForm from '../components/ContactForm';
+import styles from './ContactPage.module.css';
 
 const ContactPage = () => {
   return (
-    <div style={{ padding: '2rem' }}>
+    <main className={styles.contactWrapper}>
       <ContactForm />
-    </div>
+    </main>
   );
 };
 
 export default ContactPage;
-

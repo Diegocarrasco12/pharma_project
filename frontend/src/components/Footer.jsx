@@ -7,6 +7,18 @@ const Footer = () => {
       <div className={styles.columns}>
         <div className={styles.logo}>
           <img src="/images/logo.png" alt="Pharma Project" />
+          <a
+            href="https://www.remediosmasbaratos.cl"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+          <img
+             src="/images/cenebast.jpeg"
+             alt="Farmacia adherida a CENABAST"
+             className={styles.cenabastLogo}
+          />
+
+          </a>
         </div>
 
         <div className={styles.column}>

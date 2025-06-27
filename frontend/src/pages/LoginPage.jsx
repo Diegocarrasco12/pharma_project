@@ -1,9 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import ScrollTopLogo from '../components/ScrollTopLogo';
 import styles from './LoginPage.module.css';
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -17,7 +14,6 @@ const LoginPage = () => {
   const firstErrorRef = useRef(null);
   const navigate = useNavigate();
 
-  // ✅ Mostrar toast si hay mensaje guardado
   useEffect(() => {
     const toastMessage = localStorage.getItem('toastMessage');
     if (toastMessage) {
@@ -67,7 +63,6 @@ const LoginPage = () => {
             localStorage.setItem('role', data.user.role);
           }
 
-          // ✅ Guardamos el toast para mostrarlo tras el redirect
           localStorage.setItem('toastMessage', 'Inicio de sesión exitoso');
 
           setEmail('');
@@ -88,55 +83,50 @@ const LoginPage = () => {
   };
 
   return (
-    <>
-      <Header />
-      <div className={styles.pageWrapper}>
-        <div className={styles.loginContainer}>
-          <div className={styles.loginBox}>
-            <h1>Iniciar sesión</h1>
-            <form className={styles.form} onSubmit={handleSubmit} noValidate>
-              <label>Correo electrónico</label>
+    <div className={styles.pageWrapper}>
+      <div className={styles.loginContainer}>
+        <div className={styles.loginBox}>
+          <h1>Iniciar sesión</h1>
+          <form className={styles.form} onSubmit={handleSubmit} noValidate>
+            <label>Correo electrónico</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="correo@ejemplo.com"
+              ref={errors.email ? firstErrorRef : null}
+            />
+            {errors.email && <p className={styles.error}>{errors.email}</p>}
+
+            <label>Contraseña</label>
+            <div className={styles.passwordContainer}>
               <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="correo@ejemplo.com"
-                ref={errors.email ? firstErrorRef : null}
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="********"
+                ref={errors.password && !errors.email ? firstErrorRef : null}
               />
-              {errors.email && <p className={styles.error}>{errors.email}</p>}
-
-              <label>Contraseña</label>
-              <div className={styles.passwordContainer}>
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="********"
-                  ref={errors.password && !errors.email ? firstErrorRef : null}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className={styles.toggleButton}
-                >
-                  {showPassword ? 'Ocultar' : 'Mostrar'}
-                </button>
-              </div>
-              {errors.password && <p className={styles.error}>{errors.password}</p>}
-
-              <button type="submit" disabled={loading}>
-                {loading ? 'Ingresando...' : 'Ingresar'}
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className={styles.toggleButton}
+              >
+                {showPassword ? 'Ocultar' : 'Mostrar'}
               </button>
-            </form>
-            <p className={styles.registerLink}>
-              ¿No tienes una cuenta? <Link to="/registro">Regístrate</Link>
-            </p>
-          </div>
+            </div>
+            {errors.password && <p className={styles.error}>{errors.password}</p>}
+
+            <button type="submit" disabled={loading}>
+              {loading ? 'Ingresando...' : 'Ingresar'}
+            </button>
+          </form>
+          <p className={styles.registerLink}>
+            ¿No tienes una cuenta? <Link to="/registro">Regístrate</Link>
+          </p>
         </div>
-        <ScrollTopLogo />
       </div>
-      <Footer />
-    </>
+    </div>
   );
 };
 

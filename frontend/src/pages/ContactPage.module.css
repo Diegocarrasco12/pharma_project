@@ -1,0 +1,9 @@
+.contactWrapper {
+  min-height: 100vh;
+  padding: 4rem 1rem;
+  background-color: #f0f8ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}

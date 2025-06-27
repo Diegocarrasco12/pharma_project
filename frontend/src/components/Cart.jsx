@@ -6,21 +6,27 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
 const Cart = () => {
-  const { cartItems, isCartOpen, toggleCart, removeFromCart, clearCart } = useCart();
+  const {
+    cartItems,
+    isCartOpen,
+    toggleCart,
+    removeFromCart,
+    clearCart,
+    increaseQuantity,
+    decreaseQuantity
+  } = useCart();
+
   const navigate = useNavigate();
 
-  // ✅ Cálculo del total
   const total = cartItems.reduce((sum, item) => {
     const price = parseFloat(item.price.replace(/\$|\./g, '').replace(',', '.'));
-    return sum + price * (item.quantity || 1); // se multiplica por la cantidad
+    return sum + price * (item.quantity || 1);
   }, 0);
 
-  // ✅ Función para finalizar la compra
   const handleCheckout = async () => {
     const token = localStorage.getItem('token');
-
     const cartData = cartItems.map(item => ({
-      productId: item.id, // asegúrate que cada producto tenga "id"
+      productId: item.id,
       quantity: item.quantity || 1,
       price: parseFloat(item.price.replace(/\$|\./g, '').replace(',', '.'))
     }));
@@ -36,8 +42,8 @@ const Cart = () => {
       });
 
       toast.success('¡Compra registrada exitosamente!');
-      clearCart(); // limpia el carrito
-      navigate('/perfil'); // redirige al perfil o historial
+      clearCart();
+      navigate('/perfil');
 
     } catch (error) {
       console.error('Error al registrar compra:', error);
@@ -48,16 +54,23 @@ const Cart = () => {
   return (
     <div className={`${styles.cartSidebar} ${isCartOpen ? styles.open : ''}`}>
       <button className={styles.closeButton} onClick={toggleCart}>✕</button>
-      <h2>Mi Carrito</h2>
-      
+      <h2 style={{ textAlign: 'center', marginBottom: '1rem', color: '#0b2b4b' }}>Mi Carrito</h2>
+
       <ul className={styles.cartList}>
         {cartItems.length === 0 ? (
           <p className={styles.emptyMessage}>Tu carrito está vacío</p>
         ) : (
           cartItems.map((item, index) => (
             <li key={index} className={styles.cartItem}>
-              <p>{item.name}</p>
-              <p>{item.price}</p>
+              <div>
+                <p style={{ fontWeight: 'bold', marginBottom: '4px' }}>{item.name}</p>
+                <p style={{ marginBottom: '4px' }}>{item.price}</p>
+                <div className={styles.quantityControls}>
+                  <button onClick={() => decreaseQuantity(item.name)}>-</button>
+                  <span>{item.quantity}</span>
+                  <button onClick={() => increaseQuantity(item.name)}>+</button>
+                </div>
+              </div>
               <button
                 className={styles.removeButton}
                 onClick={() => removeFromCart(item.name)}
@@ -69,7 +82,6 @@ const Cart = () => {
         )}
       </ul>
 
-      {/* ✅ Mostrar total si hay productos */}
       {cartItems.length > 0 && (
         <>
           <div className={styles.cartTotal}>

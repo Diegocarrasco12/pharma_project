@@ -2,9 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from './RegisterPage.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import ScrollTopLogo from '../components/ScrollTopLogo';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -20,7 +17,6 @@ const RegisterPage = () => {
   const firstErrorRef = useRef(null);
   const navigate = useNavigate();
 
-  // ✅ Mostrar mensaje diferido si existe
   useEffect(() => {
     const toastMessage = localStorage.getItem('toastMessage');
     if (toastMessage) {
@@ -73,7 +69,6 @@ const RegisterPage = () => {
         const data = await response.json();
 
         if (response.ok) {
-          // ✅ Guardar mensaje para mostrarlo tras redirigir
           localStorage.setItem('toastMessage', 'Cuenta creada con éxito');
           setName('');
           setEmail('');
@@ -96,103 +91,98 @@ const RegisterPage = () => {
   const inputClass = (field) => (errors[field] ? `${styles.inputError}` : '');
 
   return (
-    <>
-      <Header />
-      <div className={styles.registerContainer}>
-        <div className={styles.registerBox}>
-          <h1>Crear cuenta</h1>
-          <form className={styles.form} onSubmit={handleSubmit} noValidate>
-            <label>Nombre completo</label>
+    <div className={styles.registerContainer}>
+      <div className={styles.registerBox}>
+        <h1>Crear cuenta</h1>
+        <form className={styles.form} onSubmit={handleSubmit} noValidate>
+          <label>Nombre completo</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Tu nombre"
+            className={inputClass('name')}
+            ref={errors.name ? firstErrorRef : null}
+            aria-invalid={!!errors.name}
+            aria-describedby="error-name"
+          />
+          {errors.name && <p id="error-name" className={styles.error}>❌ {errors.name}</p>}
+
+          <label>Correo electrónico</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="correo@ejemplo.com"
+            className={inputClass('email')}
+            ref={errors.email && !errors.name ? firstErrorRef : null}
+            aria-invalid={!!errors.email}
+            aria-describedby="error-email"
+          />
+          {errors.email && <p id="error-email" className={styles.error}>❌ {errors.email}</p>}
+
+          <label>Contraseña</label>
+          <div className={styles.passwordContainer}>
             <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Tu nombre"
-              className={inputClass('name')}
-              ref={errors.name ? firstErrorRef : null}
-              aria-invalid={!!errors.name}
-              aria-describedby="error-name"
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="********"
+              className={inputClass('password')}
+              ref={errors.password && !errors.name && !errors.email ? firstErrorRef : null}
+              aria-invalid={!!errors.password}
+              aria-describedby="error-password"
             />
-            {errors.name && <p id="error-name" className={styles.error}>❌ {errors.name}</p>}
-
-            <label>Correo electrónico</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="correo@ejemplo.com"
-              className={inputClass('email')}
-              ref={errors.email && !errors.name ? firstErrorRef : null}
-              aria-invalid={!!errors.email}
-              aria-describedby="error-email"
-            />
-            {errors.email && <p id="error-email" className={styles.error}>❌ {errors.email}</p>}
-
-            <label>Contraseña</label>
-            <div className={styles.passwordContainer}>
-              <input
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="********"
-                className={inputClass('password')}
-                ref={errors.password && !errors.name && !errors.email ? firstErrorRef : null}
-                aria-invalid={!!errors.password}
-                aria-describedby="error-password"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className={styles.toggleButton}
-              >
-                {showPassword ? 'Ocultar' : 'Mostrar'}
-              </button>
-            </div>
-            {errors.password && <p id="error-password" className={styles.error}>❌ {errors.password}</p>}
-
-            <label>Confirmar contraseña</label>
-            <div className={styles.passwordContainer}>
-              <input
-                type={showConfirmPassword ? 'text' : 'password'}
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="********"
-                className={inputClass('confirmPassword')}
-                ref={
-                  errors.confirmPassword &&
-                  !errors.name &&
-                  !errors.email &&
-                  !errors.password
-                    ? firstErrorRef
-                    : null
-                }
-                aria-invalid={!!errors.confirmPassword}
-                aria-describedby="error-confirm"
-              />
-              <button
-                type="button"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className={styles.toggleButton}
-              >
-                {showConfirmPassword ? 'Ocultar' : 'Mostrar'}
-              </button>
-            </div>
-            {errors.confirmPassword && (
-              <p id="error-confirm" className={styles.error}>❌ {errors.confirmPassword}</p>
-            )}
-
-            <button type="submit" disabled={loading}>
-              {loading ? 'Registrando...' : 'Registrarse'}
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className={styles.toggleButton}
+            >
+              {showPassword ? 'Ocultar' : 'Mostrar'}
             </button>
-          </form>
-          <p className={styles.loginLink}>
-            ¿Ya tienes una cuenta? <Link to="/login">Inicia sesión</Link>
-          </p>
-        </div>
+          </div>
+          {errors.password && <p id="error-password" className={styles.error}>❌ {errors.password}</p>}
+
+          <label>Confirmar contraseña</label>
+          <div className={styles.passwordContainer}>
+            <input
+              type={showConfirmPassword ? 'text' : 'password'}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              placeholder="********"
+              className={inputClass('confirmPassword')}
+              ref={
+                errors.confirmPassword &&
+                !errors.name &&
+                !errors.email &&
+                !errors.password
+                  ? firstErrorRef
+                  : null
+              }
+              aria-invalid={!!errors.confirmPassword}
+              aria-describedby="error-confirm"
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className={styles.toggleButton}
+            >
+              {showConfirmPassword ? 'Ocultar' : 'Mostrar'}
+            </button>
+          </div>
+          {errors.confirmPassword && (
+            <p id="error-confirm" className={styles.error}>❌ {errors.confirmPassword}</p>
+          )}
+
+          <button type="submit" disabled={loading}>
+            {loading ? 'Registrando...' : 'Registrarse'}
+          </button>
+        </form>
+        <p className={styles.loginLink}>
+          ¿Ya tienes una cuenta? <Link to="/login">Inicia sesión</Link>
+        </p>
       </div>
-      <Footer />
-      <ScrollTopLogo />
-    </>
+    </div>
   );
 };
 
