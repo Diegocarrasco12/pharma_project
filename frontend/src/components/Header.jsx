@@ -99,7 +99,7 @@ export default function Header() {
           <div className={styles.left}>
             <Link to="/" className={styles.logoLink}>
               <img
-                src="/images/logo.png"
+                src="/images/logo2.png"
                 alt="Logo Pharma Project"
                 className={styles.logoImg}
               />

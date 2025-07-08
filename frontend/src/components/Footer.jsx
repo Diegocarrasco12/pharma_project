@@ -6,7 +6,7 @@ const Footer = () => {
     <footer className={styles.footer}>
       <div className={styles.columns}>
         <div className={styles.logo}>
-          <img src="/images/logo.png" alt="Pharma Project" />
+          <img src="/images/logo3.png" alt="Pharma Project" />
           <a
             href="https://www.remediosmasbaratos.cl"
             target="_blank"
